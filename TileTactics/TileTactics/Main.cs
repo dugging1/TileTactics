@@ -12,10 +12,10 @@ namespace TileTactics {
 	public class Main : Game {
 		private GraphicsDeviceManager graphics;
 		private SpriteBatch spriteBatch;
-		private Camera2D camera;
+		public Camera2D camera;
 		private RenderTarget2D rend;
 		private Map map;
-		private InputHandler inputHandler = new InputHandler();
+		public InputHandler inputHandler = new InputHandler();
 
 		public static Dictionary<string, Texture2D> Textures = new Dictionary<string, Texture2D>();
 
@@ -65,6 +65,8 @@ namespace TileTactics {
 			Textures.Add("Heart", Content.Load<Texture2D>("Heart"));
 			Textures.Add("Tile", Content.Load<Texture2D>("tile"));
             Textures.Add("OffAvatar", Content.Load<Texture2D>("AvatarOff"));
+            Textures.Add("TileSelected", Content.Load<Texture2D>("tileselected"));
+
 
             map = new Map();
 
