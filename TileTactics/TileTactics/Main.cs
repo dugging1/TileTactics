@@ -15,6 +15,7 @@ namespace TileTactics {
 		private Camera2D camera;
 		private RenderTarget2D rend;
 		private Map map;
+		private InputHandler inputHandler = new InputHandler();
 
 		public Dictionary<string, Texture2D> Textures = new Dictionary<string, Texture2D>();
 
@@ -52,7 +53,7 @@ namespace TileTactics {
 			spriteBatch = new SpriteBatch(GraphicsDevice);
 
 			camera = new Camera2D(graphics.GraphicsDevice);
-			camera.Zoom = 1.0f/(GraphicsDevice.DisplayMode.Height/Height);
+			camera.Zoom = 0.5f/(GraphicsDevice.DisplayMode.Height/Height);
 
 			Textures.Add("Avatar", Content.Load<Texture2D>("TempAva"));
 			Textures.Add("APBanner", Content.Load<Texture2D>("APBanner"));
@@ -81,9 +82,42 @@ namespace TileTactics {
 			if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
 				Exit();
 
-			// TODO: Add your update logic here
+			inputHandler.update();
+			handleInput(gameTime);
 
 			base.Update(gameTime);
+		}
+
+		private const float cameraSpeed = 0.5f;
+		private void handleInput(GameTime dt) {
+			if (inputHandler.isKeyPressed(Keys.A)) {
+				if(camera.Position.X > 0) {
+					camera.Position -= new Vector2(cameraSpeed*dt.ElapsedGameTime.Milliseconds, 0);
+					if (camera.Position.X < 0)
+						camera.Position = new Vector2(0, camera.Position.Y);
+				}
+			}
+			if (inputHandler.isKeyPressed(Keys.D)) {
+				if (camera.Position.X <= 70*64-480) {
+					camera.Position += new Vector2(cameraSpeed*dt.ElapsedGameTime.Milliseconds, 0);
+					if (camera.Position.X > 70*64-480)
+						camera.Position = new Vector2(70*64-480, camera.Position.Y);
+				}
+			}
+			if (inputHandler.isKeyPressed(Keys.W)) {
+				if (camera.Position.Y > 0) {
+					camera.Position -= new Vector2(0, cameraSpeed*dt.ElapsedGameTime.Milliseconds);
+					if (camera.Position.X > 0)
+						camera.Position = new Vector2(camera.Position.X, 0);
+				}
+			}
+			if (inputHandler.isKeyPressed(Keys.S)) {
+				if (camera.Position.Y < 70*64-270) {
+					camera.Position += new Vector2(0, cameraSpeed*dt.ElapsedGameTime.Milliseconds);
+					if (camera.Position.X > 70*64-270)
+						camera.Position = new Vector2(camera.Position.X, 70*64-270);
+				}
+			}
 		}
 
 		/// <summary>
@@ -104,7 +138,7 @@ namespace TileTactics {
 			GraphicsDevice.SetRenderTarget(null);
 
 			spriteBatch.Begin();
-			spriteBatch.Draw(rend, new Vector2(0), scale: new Vector2(1.0f/camera.Zoom));
+			spriteBatch.Draw(rend, new Vector2(0));
 			spriteBatch.End();
 
 			base.Draw(gameTime);
