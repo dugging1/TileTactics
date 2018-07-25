@@ -10,7 +10,7 @@ namespace TileTactics
 {
     public class Unit
     {
-        private int AP;
+        public int AP;
         public int HP;
         public Texture2D Avatar;
         public string Username;
@@ -24,11 +24,6 @@ namespace TileTactics
         public void draw(SpriteBatch s, Vector2 Origin)
         {
             s.Draw(Avatar, Origin);
-        }
-
-        public void addAP(int Amount)
-        {
-            AP = AP + Amount;
         }
     }
 }
