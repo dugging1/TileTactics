@@ -34,8 +34,13 @@ namespace TileTactics {
 		/// and initialize them as well.
 		/// </summary>
 		protected override void Initialize() {
-			// TODO: Add your initialization logic here
+			graphics.PreferredBackBufferHeight = GraphicsDevice.DisplayMode.Height/2;
+			graphics.PreferredBackBufferWidth = GraphicsDevice.DisplayMode.Width/2;
+			//graphics.IsFullScreen = true;
+			graphics.ApplyChanges();
 
+			Window.AllowUserResizing = true;
+			IsMouseVisible = true;
 			base.Initialize();
 		}
 
