@@ -64,5 +64,40 @@ namespace TileTactics
             }
         }
 
+        public bool Attack(Vector2 CurrentLocation, Vector2 EndLocation)
+        {
+            if (getData((int)CurrentLocation.X, (int)CurrentLocation.Y).AP >= 1 && getData((int)EndLocation.X, (int)EndLocation.Y) != null)
+            {
+                if (getData((int)EndLocation.X, (int)EndLocation.Y).HP == 1)
+                {
+                    setData((int)EndLocation.X, (int)EndLocation.Y, null);
+                    //THIS IS NOT FINISHED - UPDATE TO HANDLE MOVING PLAYERS TO DEAD LIST!
+                }
+                else
+                {
+                    getData((int)EndLocation.X, (int)EndLocation.Y).HP = getData((int)EndLocation.X, (int)EndLocation.Y).HP - 1;
+                }
+                getData((int)CurrentLocation.X, (int)CurrentLocation.Y).AP = getData((int)CurrentLocation.X, (int)CurrentLocation.Y).AP - 1;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public bool ShootAP(Vector2 CurrentLocation, Vector2 EndLocation)
+        {
+            if (getData((int)CurrentLocation.X, (int)CurrentLocation.Y).AP >= 1 && getData((int)EndLocation.X, (int)EndLocation.Y) != null)
+            {
+                getData((int)CurrentLocation.X, (int)CurrentLocation.Y).AP = getData((int)CurrentLocation.X, (int)CurrentLocation.Y).AP - 1;
+                getData((int)EndLocation.X, (int)EndLocation.Y).AP = getData((int)EndLocation.X, (int)EndLocation.Y).AP + 1;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }
