@@ -36,16 +36,33 @@ namespace TileTactics
             }
         }
 
-        public bool MoveCheck(Vector2 Origin, Vector2 Endpoint)
+        public bool MoveCheck(Vector2 Origin, Vector2 Endpoint) //checks radi of 1 tile around Origin
         {
-            if (Origin.X == Endpoint.X && (Origin.Y == Endpoint.Y - 1 || Origin.Y == Endpoint.Y + 1))
-                return true;
-            else if (Origin.Y == Endpoint.Y && (Origin.X == Endpoint.X - 1 || Origin.X == Endpoint.X + 1))
-                return true;
-            else if (((Origin.X == Endpoint.X + 1) || (Origin.X == Endpoint.X - 1)) && ((Origin.Y == Endpoint.Y + 1) || Origin.Y == Endpoint.Y - 1))
-                return true;
-            else
-                return false;
+            return (Origin - Endpoint).Length() <= Math.Pow(2, 0.5f) && getData((int)Endpoint.X, (int)Endpoint.Y) == null;
         }
+
+        public bool AimCheck(Vector2 Origin, Vector2 Endpoint) //checks radi of 3 tiles around Origin
+        {
+            if (((Origin - Endpoint).Length() <= Math.Pow(18, 0.5f) && getData((int)Endpoint.X, (int)Endpoint.Y) == null))
+                if (Endpoint != Origin + new Vector2(0, 4) && Endpoint != Origin + new Vector2(4, 0) && Endpoint != Origin + new Vector2(-4, 0) && Endpoint != Origin + new Vector2(0, -4))
+                    return true;
+            return false;
+        }
+
+        public bool MoveUnit(Vector2 CurrentLocation,Vector2 NewLocation)
+        {
+            if (MoveCheck(CurrentLocation,NewLocation) && getData((int)CurrentLocation.X, (int)CurrentLocation.Y).AP >= 1)
+            {
+                Unit Temp = getData((int)CurrentLocation.X, (int)CurrentLocation.Y);
+                Temp.AP = Temp.AP - 1;
+                setData((int)NewLocation.X, (int)NewLocation.Y, new Unit(Temp));
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
     }
 }
