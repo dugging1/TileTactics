@@ -55,8 +55,10 @@ namespace TileTactics {
 
 			camera = new Camera2D(graphics.GraphicsDevice);
 			camera.Zoom = 0.5f/(GraphicsDevice.DisplayMode.Height/Height);
+			camera.Position = new Vector2(70*64/2);
 			camera.MinimumZoom = 0.2f;
 			camera.MaximumZoom = 1.2f;
+			camera.Origin = new Vector2(0);
 
 			Textures.Add("Avatar", Content.Load<Texture2D>("Avatar"));
 			Textures.Add("APBanner", Content.Load<Texture2D>("APBanner"));
@@ -69,14 +71,6 @@ namespace TileTactics {
 			rend = new RenderTarget2D(GraphicsDevice, Convert.ToInt32(Width), Convert.ToInt32(Height));
 
             map.setData(0, 0, new Unit("Test"));
-		}
-
-		/// <summary>
-		/// UnloadContent will be called once per game and is the place to unload
-		/// game-specific content.
-		/// </summary>
-		protected override void UnloadContent() {
-			// TODO: Unload any non ContentManager content here
 		}
 
 		/// <summary>
@@ -97,30 +91,31 @@ namespace TileTactics {
 		private const float cameraSpeed = 0.5f;
 		private void handleInput(GameTime dt) {
 			if (inputHandler.isKeyPressed(Keys.A)) {
-				if(camera.Position.X > 0) {
+				if(camera.BoundingRectangle.Left > 0) {
 					camera.Position -= new Vector2(cameraSpeed*dt.ElapsedGameTime.Milliseconds, 0);
-					if (camera.Position.X < 0)
-						camera.Position = new Vector2(0, camera.Position.Y);
+					if (camera.BoundingRectangle.Left < 0)
+						camera.Position = camera.WorldToScreen(0,0);
+						//camera.Position = new Vector2(0, camera.Position.Y);
 				}
 			}
 			if (inputHandler.isKeyPressed(Keys.D)) {
-				if (camera.Position.X <= 70*64-480) {
+				if (camera.BoundingRectangle.Right <= 70*64-480) {
 					camera.Position += new Vector2(cameraSpeed*dt.ElapsedGameTime.Milliseconds, 0);
-					if (camera.Position.X > 70*64-480)
+					if (camera.BoundingRectangle.Right > 70*64-480)
 						camera.Position = new Vector2(70*64-480, camera.Position.Y);
 				}
 			}
 			if (inputHandler.isKeyPressed(Keys.W)) {
-				if (camera.Position.Y > 0) {
+				if (camera.BoundingRectangle.Top > 0) {
 					camera.Position -= new Vector2(0, cameraSpeed*dt.ElapsedGameTime.Milliseconds);
-					if (camera.Position.X < 0)
+					if (camera.BoundingRectangle.Top < 0)
 						camera.Position = new Vector2(camera.Position.X, 0);
 				}
 			}
 			if (inputHandler.isKeyPressed(Keys.S)) {
-				if (camera.Position.Y < 70*64-270) {
+				if (camera.BoundingRectangle.Bottom < 70*64-270) {
 					camera.Position += new Vector2(0, cameraSpeed*dt.ElapsedGameTime.Milliseconds);
-					if (camera.Position.X > 70*64-270)
+					if (camera.BoundingRectangle.Bottom > 70*64-270)
 						camera.Position = new Vector2(camera.Position.X, 70*64-270);
 				}
 			}
