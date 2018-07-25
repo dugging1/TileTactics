@@ -56,7 +56,7 @@ namespace TileTactics {
 			camera = new Camera2D(graphics.GraphicsDevice);
 			camera.Zoom = 0.5f/(GraphicsDevice.DisplayMode.Height/Height);
 
-			Textures.Add("Avatar", Content.Load<Texture2D>("TempAva"));
+			Textures.Add("Avatar", Content.Load<Texture2D>("Avatar"));
 			Textures.Add("APBanner", Content.Load<Texture2D>("APBanner"));
 			Textures.Add("Heart", Content.Load<Texture2D>("Heart"));
 			Textures.Add("Tile", Content.Load<Texture2D>("tile"));
@@ -64,6 +64,8 @@ namespace TileTactics {
 			map = new Map();
 
 			rend = new RenderTarget2D(GraphicsDevice, Convert.ToInt32(Width), Convert.ToInt32(Height));
+
+            map.setData(0, 0, new Unit(this, "Test"));
 		}
 
 		/// <summary>
