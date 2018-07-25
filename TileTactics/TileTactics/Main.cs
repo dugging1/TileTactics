@@ -38,6 +38,7 @@ namespace TileTactics {
 			graphics.PreferredBackBufferHeight = GraphicsDevice.DisplayMode.Height/2;
 			graphics.PreferredBackBufferWidth = GraphicsDevice.DisplayMode.Width/2;
 			//graphics.IsFullScreen = true;
+			graphics.SynchronizeWithVerticalRetrace = true;
 			graphics.ApplyChanges();
 
 			Window.AllowUserResizing = true;
