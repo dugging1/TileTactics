@@ -1,15 +1,17 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Collections.Generic;
 
 namespace TileTactics {
-	/// <summary>
-	/// This is the main type for your game.
-	/// </summary>
-	public class Main : Game {
-		GraphicsDeviceManager graphics;
-		SpriteBatch spriteBatch;
-
+    /// <summary>
+    /// This is the main type for your game.
+    /// </summary>
+    public class Main : Game {
+        GraphicsDeviceManager graphics;
+        SpriteBatch spriteBatch;
+        public Dictionary<string, Texture2D> Textures;
+        public Map map;
 		public Main() {
 			graphics = new GraphicsDeviceManager(this);
 			Content.RootDirectory = "Content";
@@ -35,8 +37,15 @@ namespace TileTactics {
 			// Create a new SpriteBatch, which can be used to draw textures.
 			spriteBatch = new SpriteBatch(GraphicsDevice);
 
-			// TODO: use this.Content to load your game content here
-		}
+            Textures = new Dictionary<string, Texture2D>();
+            Textures.Add("Heart", this.Content.Load<Texture2D>("Heart"));
+            Textures.Add("Avatar", this.Content.Load<Texture2D>("TempAva"));
+            Textures.Add("Tile", this.Content.Load<Texture2D>("tile"));
+
+            map = new Map();
+            //Unit u = new Unit(this, "Test");
+            // TODO: use this.Content to load your game content here
+        }
 
 		/// <summary>
 		/// UnloadContent will be called once per game and is the place to unload
@@ -70,6 +79,8 @@ namespace TileTactics {
 			// TODO: Add your drawing code here
 
 			base.Draw(gameTime);
+
+            map.draw(spriteBatch,this);
 		}
 	}
 }
