@@ -1,14 +1,20 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using MonoGame.Extended;
 
 namespace TileTactics {
 	/// <summary>
 	/// This is the main type for your game.
 	/// </summary>
 	public class Main : Game {
-		GraphicsDeviceManager graphics;
-		SpriteBatch spriteBatch;
+		private GraphicsDeviceManager graphics;
+		private SpriteBatch spriteBatch;
+		private Camera2D camera;
+		private RenderTarget2D rend;
+
+		public const float Height = 1080.0f;
+		public const float Width = 1920.0f;
 
 		public Main() {
 			graphics = new GraphicsDeviceManager(this);
@@ -32,10 +38,12 @@ namespace TileTactics {
 		/// all of your content.
 		/// </summary>
 		protected override void LoadContent() {
-			// Create a new SpriteBatch, which can be used to draw textures.
 			spriteBatch = new SpriteBatch(GraphicsDevice);
 
-			// TODO: use this.Content to load your game content here
+			camera = new Camera2D(graphics.GraphicsDevice);
+			camera.Zoom = 1.0f/(GraphicsDevice.DisplayMode.Height/Height);
+			
+			
 		}
 
 		/// <summary>
@@ -67,7 +75,16 @@ namespace TileTactics {
 		protected override void Draw(GameTime gameTime) {
 			GraphicsDevice.Clear(Color.CornflowerBlue);
 
-			// TODO: Add your drawing code here
+			GraphicsDevice.SetRenderTarget(rend);
+			GraphicsDevice.Clear(Color.CornflowerBlue);
+
+			spriteBatch.Begin(transformMatrix: camera.GetViewMatrix());
+			//Do draw
+
+			spriteBatch.End();
+			spriteBatch.Begin();
+			spriteBatch.Draw(rend, scale: new Vector2(1.0f/camera.Zoom));
+			spriteBatch.End();
 
 			base.Draw(gameTime);
 		}
