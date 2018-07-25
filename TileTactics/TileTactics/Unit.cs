@@ -14,7 +14,6 @@ namespace TileTactics
         public int HP;
         public Texture2D Avatar;
         public string Username;
-        private Main MainRef;
 
         public Unit(string name) {
             HP = 3;
