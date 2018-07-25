@@ -20,7 +20,7 @@ namespace TileTactics {
 		private bool wasMaximised;
 
 		public static Dictionary<string, Texture2D> Textures = new Dictionary<string, Texture2D>();
-
+        public static Dictionary<string, SpriteFont> Fonts = new Dictionary<string, SpriteFont>();
 
 		public const float Height = 1080.0f;
 		public const float Width = 1920.0f;
@@ -78,13 +78,16 @@ namespace TileTactics {
             Textures.Add("OffAvatar", Content.Load<Texture2D>("AvatarOff"));
             Textures.Add("TileSelected", Content.Load<Texture2D>("tileselected"));
 
+            Fonts.Add("Basic", Content.Load<SpriteFont>("SF"));
 
             map = new Map();
 
 			rend = new RenderTarget2D(GraphicsDevice, Convert.ToInt32(Width), Convert.ToInt32(Height));
 
             map.setData(0, 0, new Unit("Test"));
-		}
+            map.dailyAPBoost();
+            map.setData(1, 2, new Unit("Test2"));
+        }
 
 		/// <summary>
 		/// Allows the game to run logic such as updating the world,

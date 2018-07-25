@@ -44,6 +44,8 @@ namespace TileTactics
             Vector2 HeartOffset2 = new Vector2(28, 5);
             Vector2 HeartOffset3 = new Vector2(40, 5);
 
+            
+
             if (AP != 0)
             {
                 s.Draw(Avatar, Origin + AvatarOffset);
@@ -52,8 +54,8 @@ namespace TileTactics
             {
                 s.Draw(Main.Textures["OffAvatar"], Origin + AvatarOffset);
             }
-
             s.Draw(Main.Textures["APBanner"], Origin + APBannerOffset);
+            s.DrawString(Main.Fonts["Basic"], "AP: "+this.AP, Origin + new Vector2((int)APBannerOffset.X,(int)APBannerOffset.Y-1), Color.White);
 
             if (HP >= 1)
             {
