@@ -60,8 +60,9 @@ namespace TileTactics {
 			Textures.Add("APBanner", Content.Load<Texture2D>("APBanner"));
 			Textures.Add("Heart", Content.Load<Texture2D>("Heart"));
 			Textures.Add("Tile", Content.Load<Texture2D>("tile"));
+            Textures.Add("OffAvatar", Content.Load<Texture2D>("AvatarOff"));
 
-			map = new Map();
+            map = new Map();
 
 			rend = new RenderTarget2D(GraphicsDevice, Convert.ToInt32(Width), Convert.ToInt32(Height));
 
