@@ -13,6 +13,8 @@ namespace TileTactics {
 		Vector2 MousePos;
 		MouseState curMState;
 		MouseState lastMState;
+		public int MWheelPos { get { return curMState.ScrollWheelValue; } }
+		public int deltaMWheelPos { get { return MWheelPos-lastMState.ScrollWheelValue; } }
 		
 		public bool isKeyDown(Keys k) { //First frame of key down
 			if (curState == null) return false;

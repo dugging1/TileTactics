@@ -17,7 +17,7 @@ namespace TileTactics {
 		private Map map;
 		private InputHandler inputHandler = new InputHandler();
 
-		public Dictionary<string, Texture2D> Textures = new Dictionary<string, Texture2D>();
+		public static Dictionary<string, Texture2D> Textures = new Dictionary<string, Texture2D>();
 
 
 		public const float Height = 1080.0f;
@@ -55,6 +55,8 @@ namespace TileTactics {
 
 			camera = new Camera2D(graphics.GraphicsDevice);
 			camera.Zoom = 0.5f/(GraphicsDevice.DisplayMode.Height/Height);
+			camera.MinimumZoom = 0.2f;
+			camera.MaximumZoom = 1.2f;
 
 			Textures.Add("Avatar", Content.Load<Texture2D>("Avatar"));
 			Textures.Add("APBanner", Content.Load<Texture2D>("APBanner"));
@@ -122,6 +124,12 @@ namespace TileTactics {
 						camera.Position = new Vector2(camera.Position.X, 70*64-270);
 				}
 			}
+			if (camera.Zoom + (inputHandler.deltaMWheelPos/1000.0f)/(GraphicsDevice.DisplayMode.Height/Height) < camera.MinimumZoom) {
+				camera.Zoom = camera.MinimumZoom;
+			}else if(camera.Zoom + (inputHandler.deltaMWheelPos/1000.0f)/(GraphicsDevice.DisplayMode.Height/Height) > camera.MaximumZoom) {
+				camera.Zoom = camera.MaximumZoom;
+			}else
+				camera.Zoom += (inputHandler.deltaMWheelPos/1000.0f)/(GraphicsDevice.DisplayMode.Height/Height);
 		}
 
 		/// <summary>
