@@ -18,12 +18,7 @@ namespace TileTactics
 
         public Unit(string name) {
             HP = 3;
-<<<<<<< HEAD
             Avatar = Main.Textures["Avatar"];
-=======
-            MainRef = m;
-            Avatar = m.Textures["Avatar"];
->>>>>>> 5a6832dbdf305128f67479857472cd8455ca9417
             Username = name;
         }
 
@@ -50,28 +45,28 @@ namespace TileTactics
             Vector2 HeartOffset2 = new Vector2(28, 5);
             Vector2 HeartOffset3 = new Vector2(40, 5);
 
-            if (this.AP != 0)
+            if (AP != 0)
             {
                 s.Draw(Avatar, Origin + AvatarOffset);
             }
             else
             {
-                s.Draw(MainRef.Textures["OffAvatar"], Origin + AvatarOffset);
+                s.Draw(Main.Textures["OffAvatar"], Origin + AvatarOffset);
             }
 
-            s.Draw(MainRef.Textures["APBanner"], Origin + APBannerOffset);
+            s.Draw(Main.Textures["APBanner"], Origin + APBannerOffset);
 
-            if (this.HP >= 1)
+            if (HP >= 1)
             {
-                s.Draw(MainRef.Textures["Heart"], Origin+HeartOffset1);
+                s.Draw(Main.Textures["Heart"], Origin+HeartOffset1);
             }
-            if (this.HP >= 2)
+            if (HP >= 2)
             {
-                s.Draw(MainRef.Textures["Heart"], Origin + HeartOffset2);
+                s.Draw(Main.Textures["Heart"], Origin + HeartOffset2);
             }
-            if (this.HP >= 3)
+            if (HP >= 3)
             {
-                s.Draw(MainRef.Textures["Heart"], Origin + HeartOffset3);
+                s.Draw(Main.Textures["Heart"], Origin + HeartOffset3);
             }
         }
     }
