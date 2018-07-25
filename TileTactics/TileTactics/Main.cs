@@ -2,6 +2,8 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended;
+using System;
+using System.Collections.Generic;
 
 namespace TileTactics {
 	/// <summary>
@@ -12,6 +14,10 @@ namespace TileTactics {
 		private SpriteBatch spriteBatch;
 		private Camera2D camera;
 		private RenderTarget2D rend;
+		private Map map;
+
+		public Dictionary<string, Texture2D> Textures = new Dictionary<string, Texture2D>();
+
 
 		public const float Height = 1080.0f;
 		public const float Width = 1920.0f;
@@ -42,8 +48,15 @@ namespace TileTactics {
 
 			camera = new Camera2D(graphics.GraphicsDevice);
 			camera.Zoom = 1.0f/(GraphicsDevice.DisplayMode.Height/Height);
-			
-			
+
+			Textures.Add("Avatar", Content.Load<Texture2D>("TempAva"));
+			Textures.Add("APBanner", Content.Load<Texture2D>("APBanner"));
+			Textures.Add("Heart", Content.Load<Texture2D>("Heart"));
+			Textures.Add("Tile", Content.Load<Texture2D>("tile"));
+
+			map = new Map();
+
+			rend = new RenderTarget2D(GraphicsDevice, Convert.ToInt32(Width), Convert.ToInt32(Height));
 		}
 
 		/// <summary>
@@ -79,11 +92,14 @@ namespace TileTactics {
 			GraphicsDevice.Clear(Color.CornflowerBlue);
 
 			spriteBatch.Begin(transformMatrix: camera.GetViewMatrix());
-			//Do draw
+			map.draw(spriteBatch, this);
 
 			spriteBatch.End();
+
+			GraphicsDevice.SetRenderTarget(null);
+
 			spriteBatch.Begin();
-			spriteBatch.Draw(rend, scale: new Vector2(1.0f/camera.Zoom));
+			spriteBatch.Draw(rend, new Vector2(0), scale: new Vector2(1.0f/camera.Zoom));
 			spriteBatch.End();
 
 			base.Draw(gameTime);
