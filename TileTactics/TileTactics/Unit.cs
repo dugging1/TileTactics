@@ -14,12 +14,25 @@ namespace TileTactics
         public int HP;
         public Texture2D Avatar;
         public string Username;
+        private Main MainRef;
 
-        public Unit(Main m, string name) {
+        public Unit(string name) {
             HP = 3;
+<<<<<<< HEAD
+            Avatar = Main.Textures["Avatar"];
+=======
+            MainRef = m;
             Avatar = m.Textures["Avatar"];
+>>>>>>> 5a6832dbdf305128f67479857472cd8455ca9417
             Username = name;
         }
+
+		public Unit(string name, int AP, int HP) {
+			Username = name;
+			this.AP = AP;
+			this.HP = HP;
+			Avatar = Main.Textures["Avatar"];
+		}
 
         public Unit(Unit Clone)
         {
@@ -31,7 +44,35 @@ namespace TileTactics
 
         public void draw(SpriteBatch s, Vector2 Origin)
         {
-            s.Draw(Avatar, Origin);
+            Vector2 AvatarOffset = new Vector2(16, 16);
+            Vector2 APBannerOffset = new Vector2(16,50);
+            Vector2 HeartOffset1 = new Vector2(16, 5);
+            Vector2 HeartOffset2 = new Vector2(28, 5);
+            Vector2 HeartOffset3 = new Vector2(40, 5);
+
+            if (this.AP != 0)
+            {
+                s.Draw(Avatar, Origin + AvatarOffset);
+            }
+            else
+            {
+                s.Draw(MainRef.Textures["OffAvatar"], Origin + AvatarOffset);
+            }
+
+            s.Draw(MainRef.Textures["APBanner"], Origin + APBannerOffset);
+
+            if (this.HP >= 1)
+            {
+                s.Draw(MainRef.Textures["Heart"], Origin+HeartOffset1);
+            }
+            if (this.HP >= 2)
+            {
+                s.Draw(MainRef.Textures["Heart"], Origin + HeartOffset2);
+            }
+            if (this.HP >= 3)
+            {
+                s.Draw(MainRef.Textures["Heart"], Origin + HeartOffset3);
+            }
         }
     }
 }
