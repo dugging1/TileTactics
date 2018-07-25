@@ -17,6 +17,16 @@ namespace TileTactics
             mapData[y * 70 + x] = value;
         }
 
+        public void dailyAPBoost()
+        {
+            foreach (Unit User in mapData)
+            {
+                if (User != null)
+                {
+                    User.AP = User.AP + 1;
+                }
+            }
+        }
 
         public void draw(SpriteBatch s, Main m)
         {
