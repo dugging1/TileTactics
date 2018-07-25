@@ -34,7 +34,7 @@ namespace TileTactics
             {
                 for (int y = 0; y < 70; y++)
                 {
-                    s.Draw(m.Textures["Tile"], new Vector2((x * 64), (y * 64)));
+                    s.Draw(Main.Textures["Tile"], new Vector2((x * 64), (y * 64)));
 
                     if (getData(x,y) != null)
                     {

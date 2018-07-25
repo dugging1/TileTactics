@@ -68,7 +68,7 @@ namespace TileTactics {
 
 			rend = new RenderTarget2D(GraphicsDevice, Convert.ToInt32(Width), Convert.ToInt32(Height));
 
-            map.setData(0, 0, new Unit(this, "Test"));
+            map.setData(0, 0, new Unit("Test"));
 		}
 
 		/// <summary>
