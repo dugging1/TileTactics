@@ -10,7 +10,7 @@ namespace TileTactics {
 	public class InputHandler {
 		KeyboardState curState;
 		KeyboardState lastState;
-		Vector2 MousePos;
+		public Vector2 MousePos;
 		MouseState curMState;
 		MouseState lastMState;
 		public int MWheelPos { get { return curMState.ScrollWheelValue; } }

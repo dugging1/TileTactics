@@ -12,6 +12,7 @@ namespace TileTactics
     {
         private Unit[] mapData = new Unit[70*70];
         public Unit getData(int x, int y) { return mapData[y * 70 + x]; }
+        public Vector2 TileSelected;
 
         public void setData(int x, int y, Unit value) {
             mapData[y * 70 + x] = value;
@@ -34,8 +35,20 @@ namespace TileTactics
             {
                 for (int y = 0; y < 70; y++)
                 {
-                    s.Draw(Main.Textures["Tile"], new Vector2((x * 64), (y * 64)));
-
+                    Vector2 TempVector = m.camera.ScreenToWorld(m.inputHandler.MousePos) / 64;
+                    if (Math.Floor(TempVector.X) == x && Math.Floor(TempVector.Y) == y)
+                    {
+                        s.Draw(Main.Textures["TileSelected"], new Vector2((x * 64), (y * 64)));
+                        if (m.inputHandler.isMBtnPressed(0))
+                        {
+                            TileSelected = new Vector2(x, y);
+                        }
+                    }
+                    else
+                    {
+                        s.Draw(Main.Textures["Tile"], new Vector2((x * 64), (y * 64)));
+                    }
+                    
                     if (getData(x,y) != null)
                     {
                         getData(x, y).draw(s, new Vector2((x * 64), (y * 64)));
