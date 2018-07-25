@@ -35,5 +35,69 @@ namespace TileTactics
                 }
             }
         }
+
+        public bool MoveCheck(Vector2 Origin, Vector2 Endpoint) //checks radi of 1 tile around Origin
+        {
+            return (Origin - Endpoint).Length() <= Math.Pow(2, 0.5f) && getData((int)Endpoint.X, (int)Endpoint.Y) == null;
+        }
+
+        public bool AimCheck(Vector2 Origin, Vector2 Endpoint) //checks radi of 3 tiles around Origin
+        {
+            if (((Origin - Endpoint).Length() <= Math.Pow(18, 0.5f) && getData((int)Endpoint.X, (int)Endpoint.Y) == null))
+                if (Endpoint != Origin + new Vector2(0, 4) && Endpoint != Origin + new Vector2(4, 0) && Endpoint != Origin + new Vector2(-4, 0) && Endpoint != Origin + new Vector2(0, -4))
+                    return true;
+            return false;
+        }
+
+        public bool MoveUnit(Vector2 CurrentLocation,Vector2 NewLocation)
+        {
+            if (MoveCheck(CurrentLocation,NewLocation) && getData((int)CurrentLocation.X, (int)CurrentLocation.Y).AP >= 1)
+            {
+                Unit Temp = getData((int)CurrentLocation.X, (int)CurrentLocation.Y);
+                Temp.AP = Temp.AP - 1;
+                setData((int)NewLocation.X, (int)NewLocation.Y, new Unit(Temp));
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public bool Attack(Vector2 CurrentLocation, Vector2 EndLocation)
+        {
+            if (getData((int)CurrentLocation.X, (int)CurrentLocation.Y).AP >= 1 && getData((int)EndLocation.X, (int)EndLocation.Y) != null)
+            {
+                if (getData((int)EndLocation.X, (int)EndLocation.Y).HP == 1)
+                {
+                    setData((int)EndLocation.X, (int)EndLocation.Y, null);
+                    //THIS IS NOT FINISHED - UPDATE TO HANDLE MOVING PLAYERS TO DEAD LIST!
+                }
+                else
+                {
+                    getData((int)EndLocation.X, (int)EndLocation.Y).HP = getData((int)EndLocation.X, (int)EndLocation.Y).HP - 1;
+                }
+                getData((int)CurrentLocation.X, (int)CurrentLocation.Y).AP = getData((int)CurrentLocation.X, (int)CurrentLocation.Y).AP - 1;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public bool ShootAP(Vector2 CurrentLocation, Vector2 EndLocation)
+        {
+            if (getData((int)CurrentLocation.X, (int)CurrentLocation.Y).AP >= 1 && getData((int)EndLocation.X, (int)EndLocation.Y) != null)
+            {
+                getData((int)CurrentLocation.X, (int)CurrentLocation.Y).AP = getData((int)CurrentLocation.X, (int)CurrentLocation.Y).AP - 1;
+                getData((int)EndLocation.X, (int)EndLocation.Y).AP = getData((int)EndLocation.X, (int)EndLocation.Y).AP + 1;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

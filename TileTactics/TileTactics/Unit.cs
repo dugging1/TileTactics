@@ -21,6 +21,14 @@ namespace TileTactics
             Username = name;
         }
 
+        public Unit(Unit Clone)
+        {
+            AP = Clone.AP;
+            HP = Clone.HP;
+            Avatar = Clone.Avatar;
+            Username = Clone.Username;
+        }
+
         public void draw(SpriteBatch s, Vector2 Origin)
         {
             s.Draw(Avatar, Origin);
