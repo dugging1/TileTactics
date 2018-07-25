@@ -96,15 +96,14 @@ namespace TileTactics {
 				if(camera.BoundingRectangle.Left > 0) {
 					camera.Position -= new Vector2(cameraSpeed*dt.ElapsedGameTime.Milliseconds, 0);
 					if (camera.BoundingRectangle.Left < 0)
-						camera.Position = camera.WorldToScreen(0,0);
-						//camera.Position = new Vector2(0, camera.Position.Y);
+						camera.Position = new Vector2(0, camera.Position.Y);
 				}
 			}
 			if (inputHandler.isKeyPressed(Keys.D)) {
-				if (camera.BoundingRectangle.Right <= 70*64-480) {
+				if (camera.Position.X+960/camera.Zoom <= 70*64) {
 					camera.Position += new Vector2(cameraSpeed*dt.ElapsedGameTime.Milliseconds, 0);
-					if (camera.BoundingRectangle.Right > 70*64-480)
-						camera.Position = new Vector2(70*64-480, camera.Position.Y);
+					if (camera.Position.X+960/camera.Zoom > 70*64)
+						camera.Position = new Vector2(70*64-960/camera.Zoom, camera.Position.Y);
 				}
 			}
 			if (inputHandler.isKeyPressed(Keys.W)) {
@@ -115,10 +114,10 @@ namespace TileTactics {
 				}
 			}
 			if (inputHandler.isKeyPressed(Keys.S)) {
-				if (camera.BoundingRectangle.Bottom < 70*64-270) {
+				if (camera.Position.Y+540/camera.Zoom <= 70*64) {
 					camera.Position += new Vector2(0, cameraSpeed*dt.ElapsedGameTime.Milliseconds);
-					if (camera.BoundingRectangle.Bottom > 70*64-270)
-						camera.Position = new Vector2(camera.Position.X, 70*64-270);
+					if (camera.Position.Y+540/camera.Zoom > 70*64)
+						camera.Position = new Vector2(camera.Position.X, 70*64-540/camera.Zoom);
 				}
 			}
 			if (camera.Zoom + (inputHandler.deltaMWheelPos/1000.0f)/(GraphicsDevice.DisplayMode.Height/Height) < camera.MinimumZoom) {
@@ -135,13 +134,13 @@ namespace TileTactics {
 		/// <param name="gameTime">Provides a snapshot of timing values.</param>
 		protected override void Draw(GameTime gameTime) {
 			GraphicsDevice.Clear(Color.Black);
-
+			
 			GraphicsDevice.SetRenderTarget(rend);
 			GraphicsDevice.Clear(Color.Black);
 
 			spriteBatch.Begin(transformMatrix: camera.GetViewMatrix());
 			map.draw(spriteBatch, this);
-
+			
 			spriteBatch.End();
 
 			GraphicsDevice.SetRenderTarget(null);
