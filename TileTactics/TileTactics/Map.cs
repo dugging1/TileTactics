@@ -35,5 +35,17 @@ namespace TileTactics
                 }
             }
         }
+
+        public bool MoveCheck(Vector2 Origin, Vector2 Endpoint)
+        {
+            if (Origin.X == Endpoint.X && (Origin.Y == Endpoint.Y - 1 || Origin.Y == Endpoint.Y + 1))
+                return true;
+            else if (Origin.Y == Endpoint.Y && (Origin.X == Endpoint.X - 1 || Origin.X == Endpoint.X + 1))
+                return true;
+            else if (((Origin.X == Endpoint.X + 1) || (Origin.X == Endpoint.X - 1)) && ((Origin.Y == Endpoint.Y + 1) || Origin.Y == Endpoint.Y - 1))
+                return true;
+            else
+                return false;
+        }
     }
 }
