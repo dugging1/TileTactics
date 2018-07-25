@@ -15,7 +15,6 @@ namespace TileTactics {
 		public Camera2D camera;
 		private RenderTarget2D rend;
 		private Map map;
-        private GUI gui;
 		public InputHandler inputHandler = new InputHandler();
 
 		public static Dictionary<string, Texture2D> Textures = new Dictionary<string, Texture2D>();
@@ -67,10 +66,9 @@ namespace TileTactics {
 			Textures.Add("Tile", Content.Load<Texture2D>("tile"));
             Textures.Add("OffAvatar", Content.Load<Texture2D>("AvatarOff"));
             Textures.Add("TileSelected", Content.Load<Texture2D>("tileselected"));
-            Textures.Add("UI", Content.Load<Texture2D>("UI"));
+
 
             map = new Map();
-            gui = new GUI();
 
 			rend = new RenderTarget2D(GraphicsDevice, Convert.ToInt32(Width), Convert.ToInt32(Height));
 
@@ -142,12 +140,7 @@ namespace TileTactics {
 
 			spriteBatch.Begin(transformMatrix: camera.GetViewMatrix());
 			map.draw(spriteBatch, this);
-<<<<<<< HEAD
-            gui.draw(spriteBatch, this);
-
-=======
 			
->>>>>>> 24e318606c836c05fb409f5b21cd757f8a002254
 			spriteBatch.End();
 
 			GraphicsDevice.SetRenderTarget(null);
