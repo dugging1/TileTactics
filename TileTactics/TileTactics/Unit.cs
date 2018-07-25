@@ -10,7 +10,7 @@ namespace TileTactics
 {
     public class Unit
     {
-        public int AP;
+        private int AP;
         public int HP;
         public Texture2D Avatar;
         public string Username;
