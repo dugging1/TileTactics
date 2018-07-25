@@ -16,6 +16,8 @@ namespace TileTactics {
 		private RenderTarget2D rend;
 		private Map map;
 		public InputHandler inputHandler = new InputHandler();
+		private System.Windows.Forms.Form form;
+		private bool wasMaximised;
 
 		public static Dictionary<string, Texture2D> Textures = new Dictionary<string, Texture2D>();
 
@@ -40,10 +42,19 @@ namespace TileTactics {
 			//graphics.IsFullScreen = true;
 			graphics.SynchronizeWithVerticalRetrace = true;
 			graphics.ApplyChanges();
+			form = (System.Windows.Forms.Form)System.Windows.Forms.Control.FromHandle(Window.Handle);
 
-			Window.AllowUserResizing = true;
+
+			//Window.AllowUserResizing = true;
+			//Window.ClientSizeChanged += OnResize;
 			IsMouseVisible = true;
 			base.Initialize();
+		}
+
+		private float scale = 1;
+		private void OnResize(object sender, EventArgs e) {
+			scale = (float)Window.ClientBounds.Height/(float)GraphicsDevice.DisplayMode.Height;
+			//camera.Zoom = 0.5f/(Window.ClientBounds.Height/Height);
 		}
 
 		/// <summary>
@@ -56,7 +67,7 @@ namespace TileTactics {
 			camera = new Camera2D(graphics.GraphicsDevice);
 			camera.Zoom = 0.5f/(GraphicsDevice.DisplayMode.Height/Height);
 			camera.Position = new Vector2(70*64/2);
-			camera.MinimumZoom = 0.2f;
+			camera.MinimumZoom = 0.5f;
 			camera.MaximumZoom = 1.2f;
 			camera.Origin = new Vector2(0);
 
@@ -83,6 +94,11 @@ namespace TileTactics {
 		protected override void Update(GameTime gameTime) {
 			if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
 				Exit();
+
+			if(form.WindowState == System.Windows.Forms.FormWindowState.Maximized && !wasMaximised) {
+				wasMaximised = true;
+				OnResize(this, new EventArgs());
+			}
 
 			inputHandler.update();
 			handleInput(gameTime);
@@ -145,7 +161,7 @@ namespace TileTactics {
 
 			GraphicsDevice.SetRenderTarget(null);
 
-			spriteBatch.Begin();
+			spriteBatch.Begin( transformMatrix: Matrix2D.CreateScale(1.0f/scale));
 			spriteBatch.Draw(rend, new Vector2(0));
 			spriteBatch.End();
 
