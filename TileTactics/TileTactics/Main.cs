@@ -107,7 +107,7 @@ namespace TileTactics {
 			if (inputHandler.isKeyPressed(Keys.W)) {
 				if (camera.Position.Y > 0) {
 					camera.Position -= new Vector2(0, cameraSpeed*dt.ElapsedGameTime.Milliseconds);
-					if (camera.Position.X > 0)
+					if (camera.Position.X < 0)
 						camera.Position = new Vector2(camera.Position.X, 0);
 				}
 			}
