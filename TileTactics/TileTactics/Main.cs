@@ -15,6 +15,7 @@ namespace TileTactics {
 		public Camera2D camera;
 		private RenderTarget2D rend;
 		private Map map;
+        private GUI gui;
 		public InputHandler inputHandler = new InputHandler();
 		private System.Windows.Forms.Form form;
 		private bool wasMaximised;
@@ -76,11 +77,13 @@ namespace TileTactics {
 			Textures.Add("Heart", Content.Load<Texture2D>("Heart"));
 			Textures.Add("Tile", Content.Load<Texture2D>("tile"));
             Textures.Add("OffAvatar", Content.Load<Texture2D>("AvatarOff"));
+            Textures.Add("UI", Content.Load<Texture2D>("UI"));
             Textures.Add("TileSelected", Content.Load<Texture2D>("tileselected"));
 
             Fonts.Add("Basic", Content.Load<SpriteFont>("SF"));
 
             map = new Map();
+            gui = new GUI();
 
 			rend = new RenderTarget2D(GraphicsDevice, Convert.ToInt32(Width), Convert.ToInt32(Height));
 
@@ -159,15 +162,16 @@ namespace TileTactics {
 
 			spriteBatch.Begin(transformMatrix: camera.GetViewMatrix());
 			map.draw(spriteBatch, this);
-			
-			spriteBatch.End();
+            gui.draw(spriteBatch, this);
+
+
+            spriteBatch.End();
 
 			GraphicsDevice.SetRenderTarget(null);
 
 			spriteBatch.Begin( transformMatrix: Matrix2D.CreateScale(1.0f/scale));
 			spriteBatch.Draw(rend, new Vector2(0));
 			spriteBatch.End();
-
 			base.Draw(gameTime);
 		}
 	}

@@ -14,7 +14,7 @@ namespace TileTactics
         public void draw(SpriteBatch s, Main m)
         {
             Vector2 vec = new Vector2(0, 1620);
-            s.Draw(Main.Textures["UI"], m.camera.ScreenToWorld(1620, 0));
+            s.Draw(Main.Textures["UI"], m.camera.ScreenToWorld(760, 0));
             //Vector2 t = new Vector2(vec.X * mat.m11 + vec.Y * mat.m12, vec.X * mat * m21 + vec.Y * mat * 22);
         }
     }
