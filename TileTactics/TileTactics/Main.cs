@@ -80,7 +80,7 @@ namespace TileTactics {
 				//server = new Server(ip, port);
 			} else {
 				//TODO: Menu this
-				//client = new Client(ip, port);
+				//client = new Client("25.90.58.250", 25565);
 			}
 
 			Textures.Add("Avatar", Content.Load<Texture2D>("Avatar"));
