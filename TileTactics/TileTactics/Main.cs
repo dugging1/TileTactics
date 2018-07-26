@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended;
 using System;
 using System.Collections.Generic;
+using TileTactics.Network;
 
 namespace TileTactics {
 	/// <summary>
@@ -26,6 +27,10 @@ namespace TileTactics {
 		public const float Height = 1080.0f;
 		public const float Width = 1920.0f;
 
+		public bool isServer; //true = server; false = client
+		public Server server;
+		public Client client;
+
 		public Main() {
 			graphics = new GraphicsDeviceManager(this);
 			Content.RootDirectory = "Content";
@@ -40,7 +45,6 @@ namespace TileTactics {
 		protected override void Initialize() {
 			graphics.PreferredBackBufferHeight = GraphicsDevice.DisplayMode.Height/2;
 			graphics.PreferredBackBufferWidth = GraphicsDevice.DisplayMode.Width/2;
-			//graphics.IsFullScreen = true;
 			graphics.SynchronizeWithVerticalRetrace = true;
 			graphics.ApplyChanges();
 			form = (System.Windows.Forms.Form)System.Windows.Forms.Control.FromHandle(Window.Handle);
@@ -55,7 +59,6 @@ namespace TileTactics {
 		private float scale = 1;
 		private void OnResize(object sender, EventArgs e) {
 			scale = (float)Window.ClientBounds.Height/(float)GraphicsDevice.DisplayMode.Height;
-			//camera.Zoom = 0.5f/(Window.ClientBounds.Height/Height);
 		}
 
 		/// <summary>
@@ -71,6 +74,14 @@ namespace TileTactics {
 			camera.MinimumZoom = 0.5f;
 			camera.MaximumZoom = 1.2f;
 			camera.Origin = new Vector2(0);
+
+			if (isServer) {
+				//TODO: Menu this
+				//server = new Server(ip, port);
+			} else {
+				//TODO: Menu this
+				//client = new Client(ip, port);
+			}
 
 			Textures.Add("Avatar", Content.Load<Texture2D>("Avatar"));
 			Textures.Add("APBanner", Content.Load<Texture2D>("APBanner"));
@@ -112,6 +123,12 @@ namespace TileTactics {
 
 			inputHandler.update();
 			handleInput(gameTime);
+
+			if (isServer) { //TODO: uncomment when init is finished
+				//server.update();
+			} else {
+				//client.update();
+			}
 
 			base.Update(gameTime);
 		}
