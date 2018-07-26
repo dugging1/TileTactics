@@ -14,7 +14,7 @@ namespace TileTactics {
 		private SpriteBatch spriteBatch;
 		public Camera2D camera;
 		private RenderTarget2D rend;
-		private Map map;
+		public Map map;
         private GUI gui;
 		public InputHandler inputHandler = new InputHandler();
 		private System.Windows.Forms.Form form;
@@ -81,6 +81,7 @@ namespace TileTactics {
             Textures.Add("TileSelected", Content.Load<Texture2D>("tileselected"));
 
             Fonts.Add("Basic", Content.Load<SpriteFont>("SF"));
+            Fonts.Add("UIFont", Content.Load<SpriteFont>("UIFont"));
 
             map = new Map();
             gui = new GUI();
