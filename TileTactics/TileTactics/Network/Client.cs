@@ -47,6 +47,7 @@ namespace TileTactics.Network {
 		private void handleTilePacket(TilePacket p) {
 			//Update tile packet recieved on client side.
 			//TODO: update tile.
+
 		}
 
 		private void handleRecieve() {

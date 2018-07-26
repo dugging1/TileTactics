@@ -36,7 +36,14 @@ namespace TileTactics.Network {
 		private static void ReadCB(IAsyncResult ar) {
 			StateObject state = (StateObject)ar.AsyncState;
 
-			int bytesRead = clientSocket.EndReceive(ar);
+			int bytesRead = 0;
+
+			try {
+				bytesRead = clientSocket.EndReceive(ar);
+			} catch (SocketException e) {
+				clientSocket.Close();
+				return; //End program
+			}
 
 			if (bytesRead > 0) {
 				if (state.messageLength == -1) { //Start of message
