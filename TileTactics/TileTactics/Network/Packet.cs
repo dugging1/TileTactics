@@ -7,10 +7,12 @@ using System.Threading.Tasks;
 
 namespace TileTactics.Network {
 	public abstract class Packet {
+		public static int ID { get; set; }
 		static Type[] PacketIds = new Type[8];
 
 		public static void packetInit() {
 			PacketIds[0] = typeof(TilePacket);
+			TilePacket.ID = 0;
 		}
 
 		public abstract byte[] toByte();
@@ -19,6 +21,8 @@ namespace TileTactics.Network {
 		}
 
 		public class TilePacket : Packet {
+			private static int id;
+			public new static int ID { get { return id; } set { id=value; } }
 			Vector2 Pos;
 			bool hasChar;
 			Unit u;
