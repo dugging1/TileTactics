@@ -45,8 +45,13 @@
     <Compile Include="InputHandler.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Map.cs" />
+    <Compile Include="Network\Client.cs" />
+    <Compile Include="Network\ClientSocketHandler.cs" />
+    <Compile Include="Network\NetPacket.cs" />
     <Compile Include="Network\Packet.cs" />
+    <Compile Include="Network\Server.cs" />
     <Compile Include="Network\ServerSocketHandler.cs" />
+    <Compile Include="Network\StateObject.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Unit.cs" />
