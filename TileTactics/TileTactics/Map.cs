@@ -29,6 +29,26 @@ namespace TileTactics
             }
         }
 
+        public void AddRandomUnit(string Username)
+        {
+            bool locationFound = false;
+            Random R = new Random();
+
+            int RX;
+            int RY;
+
+            while (locationFound != true)
+            {
+                RX = R.Next(0, 69);
+                RY = R.Next(0, 69);
+                if (getData(RX,RY) == null)
+                {
+                    setData(RX, RY, new Unit(Username));
+                    locationFound = true;
+                }
+            }
+        }
+
         public void draw(SpriteBatch s, Main m)
         {
             for (int x = 0; x < 70; x++)

@@ -88,7 +88,10 @@ namespace TileTactics {
 
 			rend = new RenderTarget2D(GraphicsDevice, Convert.ToInt32(Width), Convert.ToInt32(Height));
 
-            map.setData(0, 0, new Unit("Test"));
+            for (int i = 0; i < 20; i++)
+            {
+                map.AddRandomUnit("Test");
+            }
             map.dailyAPBoost();
             map.setData(1, 2, new Unit("Test2"));
         }
