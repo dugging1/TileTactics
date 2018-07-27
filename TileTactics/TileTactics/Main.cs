@@ -90,6 +90,13 @@ namespace TileTactics {
             Textures.Add("OffAvatar", Content.Load<Texture2D>("AvatarOff"));
             Textures.Add("UI", Content.Load<Texture2D>("UI"));
             Textures.Add("TileSelected", Content.Load<Texture2D>("tileselected"));
+            Textures.Add("MMBackground", Content.Load<Texture2D>("MainMenu"));
+            Textures.Add("MMAvatarSelecter", Content.Load<Texture2D>("AvatarSelecter"));
+            Textures.Add("MMConnect", Content.Load<Texture2D>("ConnectOff"));
+            Textures.Add("MMConnectHover", Content.Load<Texture2D>("ConnectHover"));
+            Textures.Add("MMConnectDisabled", Content.Load<Texture2D>("ConnectDisabled"));
+            Textures.Add("MMTextOff", Content.Load<Texture2D>("TextOff"));
+            Textures.Add("MMTextOn", Content.Load<Texture2D>("TextOn"));
 
             Fonts.Add("Basic", Content.Load<SpriteFont>("SF"));
             Fonts.Add("UIFont", Content.Load<SpriteFont>("UIFont"));
