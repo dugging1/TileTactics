@@ -104,6 +104,7 @@ namespace TileTactics {
 
             Fonts.Add("Basic", Content.Load<SpriteFont>("SF"));
             Fonts.Add("UIFont", Content.Load<SpriteFont>("UIFont"));
+            Fonts.Add("APFont", Content.Load<SpriteFont>("APText"));
 
             map = new Map();
             gui = new GUI(this);

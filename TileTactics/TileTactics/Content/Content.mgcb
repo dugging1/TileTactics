@@ -195,3 +195,10 @@
 /processorParam:TextureFormat=Color
 /build:TextOn.png
 
+#begin APText.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:APText.spritefont
+
