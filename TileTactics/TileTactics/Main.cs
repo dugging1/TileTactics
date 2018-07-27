@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using TileTactics.Network;
 
 namespace TileTactics {
+	public enum GameState { MainMenu, Map }
+
 	/// <summary>
 	/// This is the main type for your game.
 	/// </summary>
@@ -30,6 +32,8 @@ namespace TileTactics {
 		public bool isServer = false; //true = server; false = client
 		public Server server;
 		public Client client;
+
+		public GameState gameState = GameState.MainMenu;
 
 		public Main() {
 			graphics = new GraphicsDeviceManager(this);
@@ -102,7 +106,7 @@ namespace TileTactics {
             Fonts.Add("UIFont", Content.Load<SpriteFont>("UIFont"));
 
             map = new Map();
-            gui = new GUI();
+            gui = new GUI(this);
 
 			rend = new RenderTarget2D(GraphicsDevice, Convert.ToInt32(Width), Convert.ToInt32(Height));
 
@@ -130,6 +134,7 @@ namespace TileTactics {
 
 			inputHandler.update();
 			handleInput(gameTime);
+			gui.update();
 
 			if (isServer) { //TODO: uncomment when init is finished
 				//server.update();
