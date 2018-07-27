@@ -14,9 +14,17 @@ namespace TileTactics
     {
         public bool InfoOpen = false;
         public bool ClickedInGUI = false;
+        public bool MainMenuOpen;
 
         public void draw(SpriteBatch s, Main m)
         {
+            if (MainMenuOpen)
+            {
+                Vector2 MMBackground = m.camera.ScreenToWorld(new Vector2(0, 0));
+
+
+            }
+
             if (m.inputHandler.isKeyDown(Keys.I))
             {
                 if (InfoOpen == true)
