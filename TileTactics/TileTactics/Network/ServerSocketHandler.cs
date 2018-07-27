@@ -22,12 +22,27 @@ namespace TileTactics.Network {
 			Socket ret = null;
 			lock (clients) {
 				for (int i = 0; i < clients.Count; i++) {
-					if(clients[i].RemoteEndPoint == addr) {
+					if(clients[i].RemoteEndPoint as IPEndPoint == addr) {
 						ret = clients[i];
 					}
 				}
 			}
 			return ret;
+		}
+
+		public static void removeClient(IPEndPoint addr) {
+			lock (clients) {
+				for (int i = 0; i < clients.Count; i++) {
+					if (clients[i].RemoteEndPoint as IPEndPoint == addr) {
+						if (clients[i].Connected) {
+							clients[i].Shutdown(SocketShutdown.Both);
+							clients[i].Close();
+						}
+						clients.RemoveAt(i);
+						break;
+					}
+				}
+			}
 		}
 
 		public static void StartListening(long ip, int port) {
@@ -57,6 +72,7 @@ namespace TileTactics.Network {
 			Socket listener = (Socket)ar.AsyncState;
 			Socket handler = listener.EndAccept(ar);
 			addClient(handler);
+			Console.WriteLine("Accepted connection from: "+(handler.RemoteEndPoint as IPEndPoint).Address.ToString());
 
 			StateObject state = new StateObject();
 			state.workSocket = handler;
@@ -66,8 +82,14 @@ namespace TileTactics.Network {
 		private static void ReadCB(IAsyncResult ar) {
 			StateObject state = (StateObject)ar.AsyncState;
 			Socket handler = state.workSocket;
+			int bytesRead = 0;
 
-			int bytesRead = handler.EndReceive(ar);
+			try {
+				bytesRead = handler.EndReceive(ar);
+			}catch(SocketException e) {
+				removeClient(handler.RemoteEndPoint as IPEndPoint);
+				return;
+			}
 
 			if(bytesRead > 0) {
 				if(state.messageLength == -1) { //Start of message

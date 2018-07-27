@@ -26,7 +26,7 @@ namespace TileTactics.Network {
 		}
 
 		public static long stringToLongIP(string ip) {
-			string[] ipParts = (ip.Split('.')).ToArray();
+			string[] ipParts = ip.Split('.').ToArray();
 			long IP = 0;
 			for (int i = 0; i < 4; i++) {
 				IP += Convert.ToInt64(ipParts[i]) << 8*i;

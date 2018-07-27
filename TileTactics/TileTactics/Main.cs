@@ -27,7 +27,7 @@ namespace TileTactics {
 		public const float Height = 1080.0f;
 		public const float Width = 1920.0f;
 
-		public bool isServer; //true = server; false = client
+		public bool isServer = false; //true = server; false = client
 		public Server server;
 		public Client client;
 
@@ -77,7 +77,7 @@ namespace TileTactics {
 
 			if (isServer) {
 				//TODO: Menu this
-				//server = new Server(ip, port);
+				//server = new Server("25.90.58.250", 25565, this);
 			} else {
 				//TODO: Menu this
 				//client = new Client("25.90.58.250", 25565);
