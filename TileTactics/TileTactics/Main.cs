@@ -101,6 +101,7 @@ namespace TileTactics {
             Textures.Add("MMConnectDisabled", Content.Load<Texture2D>("ConnectDisabled"));
             Textures.Add("MMTextOff", Content.Load<Texture2D>("TextOff"));
             Textures.Add("MMTextOn", Content.Load<Texture2D>("TextOn"));
+            Textures.Add("MMTextSelected", Content.Load<Texture2D>("TextSelected"));
 
             Fonts.Add("Basic", Content.Load<SpriteFont>("SF"));
             Fonts.Add("UIFont", Content.Load<SpriteFont>("UIFont"));
