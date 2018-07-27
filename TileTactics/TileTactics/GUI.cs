@@ -190,6 +190,9 @@ namespace TileTactics {
 									}
 								}
 							}
+                            if (data[(int)selected].Length > 19) {
+                                data[(int)selected] = data[(int)selected].Substring(0, 19);
+                            }
 						}
 						if (reset) {
 							sw.Restart();
