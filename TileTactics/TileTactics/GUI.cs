@@ -14,7 +14,16 @@ namespace TileTactics
     {
         public bool InfoOpen = false;
         public bool ClickedInGUI = false;
-        public bool MainMenuOpen;
+        public bool MainMenuOpen = true;
+
+        // Mx = Mouse X, EntX = Top Left Entity X, Wx = Entity Width
+        public bool InBounds(float mx, float my, float entx, float enty, float wx, float wy)
+        {
+            if (mx > entx && mx < entx + wx)
+                if (my > enty && my < enty + wy)
+                    return true;
+            return false;
+        }
 
         public void draw(SpriteBatch s, Main m)
         {
@@ -22,6 +31,51 @@ namespace TileTactics
             {
                 Vector2 MMBackground = m.camera.ScreenToWorld(new Vector2(0, 0));
 
+                Vector2 MMIPBox = m.camera.ScreenToWorld(new Vector2(170, 104));
+                Vector2 MMPortBox = m.camera.ScreenToWorld(new Vector2(170, 160));
+                Vector2 MMNameBox = m.camera.ScreenToWorld(new Vector2(170, 234));
+                Vector2 MMPasswordBox = m.camera.ScreenToWorld(new Vector2(170, 307));
+
+                //Console.WriteLine(m.inputHandler.MousePos.X+" "+m.inputHandler.MousePos.X);
+
+                s.Draw(Main.Textures["MMBackground"], MMBackground, null, null, new Vector2(0, 0), 0, new Vector2(1 / m.camera.Zoom, 1 / m.camera.Zoom), Color.White);
+
+
+                if (InBounds(m.inputHandler.MousePos.X, m.inputHandler.MousePos.X, 170, 104, 168, 21))
+                {
+                    s.Draw(Main.Textures["MMTextOn"], MMIPBox, null, null, new Vector2(0, 0), 0, new Vector2(1 / m.camera.Zoom, 1 / m.camera.Zoom), Color.White);
+                }
+                else
+                {
+                    s.Draw(Main.Textures["MMTextOff"], MMIPBox, null, null, new Vector2(0, 0), 0, new Vector2(1 / m.camera.Zoom, 1 / m.camera.Zoom), Color.White);
+                }
+
+                if (InBounds(m.inputHandler.MousePos.X, m.inputHandler.MousePos.X, 170, 160, 168, 21))
+                {
+                    s.Draw(Main.Textures["MMTextOn"], MMPortBox, null, null, new Vector2(0, 0), 0, new Vector2(1 / m.camera.Zoom, 1 / m.camera.Zoom), Color.White);
+                }
+                else
+                {
+                    s.Draw(Main.Textures["MMTextOff"], MMPortBox, null, null, new Vector2(0, 0), 0, new Vector2(1 / m.camera.Zoom, 1 / m.camera.Zoom), Color.White);
+                }
+
+                if (InBounds(m.inputHandler.MousePos.X, m.inputHandler.MousePos.X, 170, 234, 168, 21))
+                {
+                    s.Draw(Main.Textures["MMTextOn"], MMNameBox, null, null, new Vector2(0, 0), 0, new Vector2(1 / m.camera.Zoom, 1 / m.camera.Zoom), Color.White);
+                }
+                else
+                {
+                    s.Draw(Main.Textures["MMTextOff"], MMNameBox, null, null, new Vector2(0, 0), 0, new Vector2(1 / m.camera.Zoom, 1 / m.camera.Zoom), Color.White);
+                }
+
+                if (InBounds(m.inputHandler.MousePos.X, m.inputHandler.MousePos.X, 170, 307, 168, 21))
+                {
+                    s.Draw(Main.Textures["MMTextOn"], MMPasswordBox, null, null, new Vector2(0, 0), 0, new Vector2(1 / m.camera.Zoom, 1 / m.camera.Zoom), Color.White);
+                }
+                else
+                {
+                    s.Draw(Main.Textures["MMTextOff"], MMPasswordBox, null, null, new Vector2(0, 0), 0, new Vector2(1 / m.camera.Zoom, 1 / m.camera.Zoom), Color.White);
+                }
 
             }
 
@@ -34,7 +88,10 @@ namespace TileTactics
                 }
                 else
                 {
-                    InfoOpen = true;
+                    if (MainMenuOpen != true)
+                    {
+                        InfoOpen = true;
+                    }
                 }
             }
             if (m.inputHandler.isMBtnDown(0) && InfoOpen == true)

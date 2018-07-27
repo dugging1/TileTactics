@@ -16,7 +16,7 @@ namespace TileTactics {
 		public Camera2D camera;
 		private RenderTarget2D rend;
 		public Map map;
-        private GUI gui;
+        public GUI gui;
 		public InputHandler inputHandler = new InputHandler();
 		private System.Windows.Forms.Form form;
 		private bool wasMaximised;

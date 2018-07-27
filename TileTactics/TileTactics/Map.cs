@@ -56,22 +56,26 @@ namespace TileTactics
                 for (int y = 0; y < 70; y++)
                 {
                     Vector2 TempVector = m.camera.ScreenToWorld(m.inputHandler.MousePos) / 64;
-                    if (Math.Floor(TempVector.X) == x && Math.Floor(TempVector.Y) == y)
+                    if (m.gui.MainMenuOpen != true)
                     {
-                        s.Draw(Main.Textures["TileSelected"], new Vector2((x * 64), (y * 64)));
-                        if (m.inputHandler.isMBtnPressed(0))
+                        if (Math.Floor(TempVector.X) == x && Math.Floor(TempVector.Y) == y)
                         {
-                            TileSelected = new Vector2(x, y);
+                            s.Draw(Main.Textures["TileSelected"], new Vector2((x * 64), (y * 64)));
+                            if (m.inputHandler.isMBtnPressed(0))
+                            {
+                                TileSelected = new Vector2(x, y);
+                            }
                         }
-                    }
-                    else
-                    {
-                        s.Draw(Main.Textures["Tile"], new Vector2((x * 64), (y * 64)));
-                    }
-                    
-                    if (getData(x,y) != null)
-                    {
-                        getData(x, y).draw(s, new Vector2((x * 64), (y * 64)));
+                        else
+                        {
+                            s.Draw(Main.Textures["Tile"], new Vector2((x * 64), (y * 64)));
+                        }
+
+
+                        if (getData(x, y) != null)
+                        {
+                            getData(x, y).draw(s, new Vector2((x * 64), (y * 64)));
+                        }
                     }
                 }
             }
