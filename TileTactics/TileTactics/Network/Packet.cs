@@ -2,13 +2,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace TileTactics.Network {
 	public abstract class Packet {
 		public abstract int ID { get; }
-		static Type[] PacketIds = new Type[4];
+		static Type[] PacketIds = new Type[5];
 
 		public static void packetInit() {
 			PacketIds[0] = typeof(TilePacket);
@@ -19,6 +20,8 @@ namespace TileTactics.Network {
 			AttackPacket.id = 2;
 			PacketIds[3] = typeof(TradePacket);
 			TradePacket.id = 3;
+			PacketIds[4] = typeof(PlayerPacket);
+			PlayerPacket.id = 4;
 		}
 
 		public abstract byte[] toByte();
@@ -130,7 +133,7 @@ namespace TileTactics.Network {
 		}
 
 		/// <summary>
-		/// Attack initiated at 'from' atacking 'to'
+		/// Attack initiated at 'from' atacking 'to' (Recieved on server only; use TilePacket to update other clients)
 		/// </summary>
 		public class AttackPacket : Packet {
 			public static int id;
@@ -170,7 +173,7 @@ namespace TileTactics.Network {
 		}
 
 		/// <summary>
-		/// Trade AP from 'from' to 'to'
+		/// Trade AP from 'from' to 'to' (Recieved on server only; use TilePacket to update other clients)
 		/// </summary>
 		public class TradePacket:Packet {
 			public static int id;
@@ -204,6 +207,76 @@ namespace TileTactics.Network {
 				ret.AddRange(BitConverter.GetBytes((int)from.Y));
 				ret.AddRange(BitConverter.GetBytes((int)to.X));
 				ret.AddRange(BitConverter.GetBytes((int)to.Y));
+
+				return ret.ToArray();
+			}
+		}
+
+		public enum PlayerStatus { Connecting, Disconnecting, Update }
+		/// <summary>
+		/// Updates server on the players currently connected (Recieved on both client and server)
+		/// </summary>
+		public class PlayerPacket : Packet {
+			public long ip;
+			public int port;
+			public string username;
+			public string password;
+			public PlayerStatus status;
+			public bool alive;
+			public bool online;
+
+			public static int id;
+			public override int ID { get { return id; } }
+
+			public PlayerPacket(byte[] data) {
+				int startCounter = 0;
+				ip = BitConverter.ToInt64(data, startCounter);
+				startCounter += sizeof(long);
+				port = BitConverter.ToInt32(data, startCounter);
+				startCounter += sizeof(int);
+				status = (PlayerStatus)BitConverter.ToInt32(data, startCounter);
+				startCounter += sizeof(int);
+				int len = BitConverter.ToInt32(data, startCounter);
+				startCounter += sizeof(int);
+				username = BitConverter.ToString(data, startCounter, len);
+				startCounter += sizeof(char)*len;
+				len = BitConverter.ToInt32(data, startCounter);
+				startCounter += sizeof(int);
+				password = BitConverter.ToString(data, startCounter, len);
+				startCounter += sizeof(char)*len;
+				alive = BitConverter.ToBoolean(data, startCounter);
+				startCounter += sizeof(bool);
+				online = BitConverter.ToBoolean(data, startCounter);
+				startCounter += sizeof(bool);
+			}
+
+			public PlayerPacket(IPEndPoint addr, string name, string pass, PlayerStatus playerStatus, bool alive, bool online) {
+				ip = NetPacket.stringToLongIP(addr.Address.ToString());
+				port = addr.Port;
+				username = name;
+				password = pass;
+				status = playerStatus;
+				this.alive = alive;
+				this.online = online;
+			}
+
+			public override byte[] toByte() {
+				List<byte> ret = new List<byte>();
+
+				ret.AddRange(BitConverter.GetBytes(id));
+				ret.AddRange(BitConverter.GetBytes(ip));
+				ret.AddRange(BitConverter.GetBytes(port));
+				ret.AddRange(BitConverter.GetBytes((int)status));
+				ret.AddRange(BitConverter.GetBytes(username.Length));
+				for (int i = 0; i < username.Length; i++) {
+					ret.AddRange(BitConverter.GetBytes(username.ToCharArray()[i]));
+				}
+				ret.AddRange(BitConverter.GetBytes(password.Length));
+				for (int i = 0; i < password.Length; i++) {
+					ret.AddRange(BitConverter.GetBytes(password.ToCharArray()[i]));
+				}
+				ret.AddRange(BitConverter.GetBytes(alive));
+				ret.AddRange(BitConverter.GetBytes(online));
 
 				return ret.ToArray();
 			}

@@ -14,6 +14,7 @@ namespace TileTactics.Network {
 		public static ConcurrentQueue<NetPacket> RecievedPacket = new ConcurrentQueue<NetPacket>();
 		public static ConcurrentQueue<NetPacket> ToSendPacket = new ConcurrentQueue<NetPacket>();
 
+		public ConcurrentDictionary<string, ServerPlayerObject> players = new ConcurrentDictionary<string, ServerPlayerObject>();
 		private Main m;
 
 		public Server(string ip, int port, Main m) {
@@ -35,8 +36,32 @@ namespace TileTactics.Network {
 			(Server s, NetPacket p) => s.handleTilePacket(p),
 			(Server s, NetPacket p) => s.handleMovePacket((MovePacket)p.p),
 			(Server s, NetPacket p) => s.handleAttackPacket((AttackPacket)p.p),
-			(Server s, NetPacket p) => s.handleTradePacket((TradePacket)p.p)
+			(Server s, NetPacket p) => s.handleTradePacket((TradePacket)p.p),
+			(Server s, NetPacket p) => s.handlePlayerPacket((PlayerPacket)p.p)
 		};
+
+		private void handlePlayerPacket(PlayerPacket p) {
+			ServerPlayerObject player;
+			players.TryGetValue(p.username, out player);
+			if (player != null) {
+				if(p.status == PlayerStatus.Connecting) {
+					if(player.password == p.password) {
+						player.online = true;
+					}
+				} else if(p.status == PlayerStatus.Disconnecting){
+					player.online = false;
+				} else {
+					player.online = p.online;
+				}
+			} else {
+				player = new ServerPlayerObject(p.ip, p.port, p.username, p.password, p.online, p.alive);
+			}
+			players.AddOrUpdate(p.username, player, (string k, ServerPlayerObject v) => player);
+			p.password = "";
+			p.ip = 0;
+			p.port = 0;
+			sendToAllClient(p);
+		}
 
 		private void handleTradePacket(TradePacket p) {
 			//Trade packet recieved server side
@@ -90,9 +115,13 @@ namespace TileTactics.Network {
 		}
 
 		private void updateTile(Vector2 vec) {
+			sendToAllClient(new TilePacket(vec, m.map.getData((int)vec.X, (int)vec.Y)));
+		}
+
+		private void sendToAllClient(Packet p) {
 			lock (ServerSocketHandler.Addresses) {
 				for (int i = 0; i < ServerSocketHandler.Addresses.Count; i++) {
-					ToSendPacket.Enqueue(new NetPacket(ServerSocketHandler.Addresses[i], new TilePacket(vec, m.map.getData((int)vec.X, (int)vec.Y))));
+					ToSendPacket.Enqueue(new NetPacket(ServerSocketHandler.Addresses[i], p));
 				}
 			}
 		}

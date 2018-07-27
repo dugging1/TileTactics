@@ -6,8 +6,11 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using TileTactics.Network;
+using static TileTactics.Network.Packet;
 
 namespace TileTactics {
 	enum MMTextFieldSelected { IPAddress, Port, UserName, Password, None }
@@ -57,28 +60,6 @@ namespace TileTactics {
 
 				Vector2 mPos = m.camera.ScreenToWorld(m.inputHandler.MousePos);
 
-                switch (selected) {
-                    case MMTextFieldSelected.IPAddress: {
-                            s.Draw(Main.Textures["MMTextSelected"], m.camera.ScreenToWorld(MMTextFields[0]), null, null, new Vector2(0, 0), 0, new Vector2(1 / m.camera.Zoom, 1 / m.camera.Zoom), Color.White);
-                            break;
-                        }
-                    case MMTextFieldSelected.Password: {
-                            s.Draw(Main.Textures["MMTextSelected"], m.camera.ScreenToWorld(MMTextFields[3]), null, null, new Vector2(0, 0), 0, new Vector2(1 / m.camera.Zoom, 1 / m.camera.Zoom), Color.White);
-                            break;
-                        }
-                    case MMTextFieldSelected.Port: {
-                            s.Draw(Main.Textures["MMTextSelected"], m.camera.ScreenToWorld(MMTextFields[1]), null, null, new Vector2(0, 0), 0, new Vector2(1 / m.camera.Zoom, 1 / m.camera.Zoom), Color.White);
-                            break;
-                        }
-                    case MMTextFieldSelected.UserName: {
-                            s.Draw(Main.Textures["MMTextSelected"], m.camera.ScreenToWorld(MMTextFields[2]), null, null, new Vector2(0, 0), 0, new Vector2(1 / m.camera.Zoom, 1 / m.camera.Zoom), Color.White);
-                            break;
-                        }
-                    default: {
-                            break;
-                        }
-                }
-
                 for (int i = 0; i < MMTextFields.Length; i++) {
                     if ((int)selected != i) {
                         if (InBounds(mPos.X, mPos.Y, m.camera.ScreenToWorld(MMTextFields[i]).X, m.camera.ScreenToWorld(MMTextFields[i]).Y, MMTextFieldSize.X/m.camera.Zoom, MMTextFieldSize.Y/m.camera.Zoom)) {
@@ -86,7 +67,9 @@ namespace TileTactics {
                         } else {
                             s.Draw(Main.Textures["MMTextOff"], m.camera.ScreenToWorld(MMTextFields[i]), null, null, new Vector2(0, 0), 0, new Vector2(1 / m.camera.Zoom, 1 / m.camera.Zoom), Color.White);
                         }
-                    }
+					} else {
+						s.Draw(Main.Textures["MMTextSelected"], m.camera.ScreenToWorld(MMTextFields[i]), null, null, new Vector2(0, 0), 0, new Vector2(1 / m.camera.Zoom, 1 / m.camera.Zoom), Color.White);
+					}
 					s.DrawString(font, data[i], m.camera.ScreenToWorld(MMTextFields[i] + new Vector2(1)), Color.Black);
 				}
 
@@ -228,7 +211,15 @@ namespace TileTactics {
 		}
 
 		private void handleConnect() {
-			m.client = new Network.Client(data[(int)MMTextFieldSelected.IPAddress], Convert.ToInt32(data[(int)MMTextFieldSelected.Port]), m); //TODO: Input validation
+			//TODO: Input validation
+			if (m.isServer) {
+				m.server = new Server(data[(int)MMTextFieldSelected.IPAddress], Convert.ToInt32(data[(int)MMTextFieldSelected.Port]), m);
+			} else {
+				m.client = new Client(data[(int)MMTextFieldSelected.IPAddress], Convert.ToInt32(data[(int)MMTextFieldSelected.Port]), m);
+				IPEndPoint localAddr = ClientSocketHandler.clientSocket.LocalEndPoint as IPEndPoint;
+				PlayerPacket p = new PlayerPacket(localAddr, data[(int)MMTextFieldSelected.UserName], data[(int)MMTextFieldSelected.Password], PlayerStatus.Connecting, true, true);
+				Client.ToSendPacket.Enqueue(new NetPacket(null, p));
+			}
 		}
 	}
 }

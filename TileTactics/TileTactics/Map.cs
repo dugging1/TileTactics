@@ -47,7 +47,7 @@ namespace TileTactics {
 			for (int x = 0; x < 70; x++) {
 				for (int y = 0; y < 70; y++) {
 					if (m.gui.MainMenuOpen != true) {
-						if (TileSelected == new Vector2(x,y)) {
+						if (TileSelected == new Vector2(x, y)) {
 							s.Draw(Main.Textures["TileSelected"], new Vector2((x * 64), (y * 64)));
 						} else {
 							s.Draw(Main.Textures["Tile"], new Vector2((x * 64), (y * 64)));

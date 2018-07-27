@@ -46,9 +46,11 @@
     <Compile Include="Main.cs" />
     <Compile Include="Map.cs" />
     <Compile Include="Network\Client.cs" />
+    <Compile Include="Network\ClientPlayerObject.cs" />
     <Compile Include="Network\ClientSocketHandler.cs" />
     <Compile Include="Network\NetPacket.cs" />
     <Compile Include="Network\Packet.cs" />
+    <Compile Include="Network\ServerPlayerObject.cs" />
     <Compile Include="Network\Server.cs" />
     <Compile Include="Network\ServerSocketHandler.cs" />
     <Compile Include="Network\StateObject.cs" />

@@ -12,10 +12,20 @@ namespace TileTactics.Network {
 		public static ConcurrentQueue<NetPacket> ToSendPacket = new ConcurrentQueue<NetPacket>();
 
 		Main m;
+		public ConcurrentDictionary<string, ClientPlayerObject> players = new ConcurrentDictionary<string, ClientPlayerObject>();
+		public bool isSelfAlive {
+			get {
+				ClientPlayerObject p;
+				players.TryGetValue(m.gui.data[(int)MMTextFieldSelected.UserName], out p);
+				if (p != null)
+					return p.alive;
+				return false;
+			}
+		}
 
-		public Client(string ip, int port, Main m) {
+		public Client(string ip, int port, Main M) {
+			m = M;
 			ClientSocketHandler.connect(NetPacket.stringToLongIP(ip), port);
-
 		}
 
 		public void update() {
@@ -28,8 +38,14 @@ namespace TileTactics.Network {
 			(Client c, Packet p) => c.handleTilePacket((TilePacket)p),
 			(Client c, Packet p) => c.handleMovePacket((MovePacket)p),
 			(Client c, Packet p) => c.handleAttackPacket((AttackPacket)p),
-			(Client c, Packet p) => c.handleTradePacket((TradePacket)p)
+			(Client c, Packet p) => c.handleTradePacket((TradePacket)p),
+			(Client c, Packet p) => c.handlePlayerPacket((PlayerPacket)p)
 		};
+
+		private void handlePlayerPacket(PlayerPacket p) {
+			ClientPlayerObject player = new ClientPlayerObject(p.username, p.online, p.alive);
+			players.AddOrUpdate(p.username, player, (string k, ClientPlayerObject v) => player);
+		}
 
 		private void handleTradePacket(TradePacket p) {
 			//Trade packet received client side (shouldn't ever happen)

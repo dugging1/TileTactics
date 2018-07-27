@@ -18,18 +18,18 @@ namespace TileTactics {
 		public Camera2D camera;
 		private RenderTarget2D rend;
 		public Map map;
-        public GUI gui;
+		public GUI gui;
 		public InputHandler inputHandler = new InputHandler();
 		private System.Windows.Forms.Form form;
 		private bool wasMaximised;
 
 		public static Dictionary<string, Texture2D> Textures = new Dictionary<string, Texture2D>();
-        public static Dictionary<string, SpriteFont> Fonts = new Dictionary<string, SpriteFont>();
+		public static Dictionary<string, SpriteFont> Fonts = new Dictionary<string, SpriteFont>();
 
 		public const float Height = 1080.0f;
 		public const float Width = 1920.0f;
 
-		public bool isServer = false; //true = server; false = client
+		public bool isServer = true; //true = server; false = client
 		public Server server;
 		public Client client;
 
@@ -52,12 +52,16 @@ namespace TileTactics {
 			graphics.SynchronizeWithVerticalRetrace = true;
 			graphics.ApplyChanges();
 			form = (System.Windows.Forms.Form)System.Windows.Forms.Control.FromHandle(Window.Handle);
-
+			form.FormClosed += Close;
 
 			//Window.AllowUserResizing = true;
 			//Window.ClientSizeChanged += OnResize;
 			IsMouseVisible = true;
 			base.Initialize();
+		}
+
+		private void Close(object sender, System.Windows.Forms.FormClosedEventArgs e) {
+			Exit();
 		}
 
 		private float scale = 1;
@@ -79,46 +83,37 @@ namespace TileTactics {
 			camera.MaximumZoom = 1.2f;
 			camera.Origin = new Vector2(0);
 
-			if (isServer) {
-				//TODO: Menu this
-				//server = new Server("25.90.58.250", 25565, this);
-			} else {
-				//TODO: Menu this
-				//client = new Client("25.90.58.250", 25565, this);
-			}
-
 			Textures.Add("Avatar", Content.Load<Texture2D>("Avatar"));
 			Textures.Add("APBanner", Content.Load<Texture2D>("APBanner"));
 			Textures.Add("Heart", Content.Load<Texture2D>("Heart"));
 			Textures.Add("Tile", Content.Load<Texture2D>("tile"));
-            Textures.Add("OffAvatar", Content.Load<Texture2D>("AvatarOff"));
-            Textures.Add("UI", Content.Load<Texture2D>("UI"));
-            Textures.Add("TileSelected", Content.Load<Texture2D>("tileselected"));
-            Textures.Add("MMBackground", Content.Load<Texture2D>("MainMenu"));
-            Textures.Add("MMAvatarSelecter", Content.Load<Texture2D>("AvatarSelecter"));
-            Textures.Add("MMConnect", Content.Load<Texture2D>("ConnectOff"));
-            Textures.Add("MMConnectHover", Content.Load<Texture2D>("ConnectHover"));
-            Textures.Add("MMConnectDisabled", Content.Load<Texture2D>("ConnectDisabled"));
-            Textures.Add("MMTextOff", Content.Load<Texture2D>("TextOff"));
-            Textures.Add("MMTextOn", Content.Load<Texture2D>("TextOn"));
-            Textures.Add("MMTextSelected", Content.Load<Texture2D>("TextSelected"));
+			Textures.Add("OffAvatar", Content.Load<Texture2D>("AvatarOff"));
+			Textures.Add("UI", Content.Load<Texture2D>("UI"));
+			Textures.Add("TileSelected", Content.Load<Texture2D>("tileselected"));
+			Textures.Add("MMBackground", Content.Load<Texture2D>("MainMenu"));
+			Textures.Add("MMAvatarSelecter", Content.Load<Texture2D>("AvatarSelecter"));
+			Textures.Add("MMConnect", Content.Load<Texture2D>("ConnectOff"));
+			Textures.Add("MMConnectHover", Content.Load<Texture2D>("ConnectHover"));
+			Textures.Add("MMConnectDisabled", Content.Load<Texture2D>("ConnectDisabled"));
+			Textures.Add("MMTextOff", Content.Load<Texture2D>("TextOff"));
+			Textures.Add("MMTextOn", Content.Load<Texture2D>("TextOn"));
+			Textures.Add("MMTextSelected", Content.Load<Texture2D>("TextSelected"));
 
-            Fonts.Add("Basic", Content.Load<SpriteFont>("SF"));
-            Fonts.Add("UIFont", Content.Load<SpriteFont>("UIFont"));
-            Fonts.Add("APFont", Content.Load<SpriteFont>("APText"));
+			Fonts.Add("Basic", Content.Load<SpriteFont>("SF"));
+			Fonts.Add("UIFont", Content.Load<SpriteFont>("UIFont"));
+			Fonts.Add("APFont", Content.Load<SpriteFont>("APText"));
 
-            map = new Map();
-            gui = new GUI(this);
+			map = new Map();
+			gui = new GUI(this);
 
 			rend = new RenderTarget2D(GraphicsDevice, Convert.ToInt32(Width), Convert.ToInt32(Height));
 
-            for (int i = 0; i < 20; i++)
-            {
-                map.AddRandomUnit("Test");
-            }
-            map.dailyAPBoost();
-            map.setData(1, 2, new Unit("Test2"));
-        }
+			for (int i = 0; i < 20; i++) {
+				map.AddRandomUnit("Test");
+			}
+			map.dailyAPBoost();
+			map.setData(1, 2, new Unit("Test2"));
+		}
 
 		/// <summary>
 		/// Allows the game to run logic such as updating the world,
@@ -127,9 +122,9 @@ namespace TileTactics {
 		/// <param name="gameTime">Provides a snapshot of timing values.</param>
 		protected override void Update(GameTime gameTime) {
 			if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-				Exit();
+				Close(null, null);
 
-			if(form.WindowState == System.Windows.Forms.FormWindowState.Maximized && !wasMaximised) {
+			if (form.WindowState == System.Windows.Forms.FormWindowState.Maximized && !wasMaximised) {
 				wasMaximised = true;
 				OnResize(this, new EventArgs());
 			}
@@ -139,7 +134,7 @@ namespace TileTactics {
 			gui.update();
 
 			if (isServer) { //TODO: uncomment when init is finished
-				//server.update();
+							//server.update();
 			} else {
 				//client.update();
 			}
@@ -149,9 +144,9 @@ namespace TileTactics {
 
 		private const float cameraSpeed = 0.5f;
 		private void handleInput(GameTime dt) {
-					#region Movement
+			#region Movement
 			if (inputHandler.isKeyPressed(Keys.A)) {
-				if(camera.BoundingRectangle.Left > 0) {
+				if (camera.BoundingRectangle.Left > 0) {
 					camera.Position -= new Vector2(cameraSpeed*dt.ElapsedGameTime.Milliseconds, 0);
 					if (camera.BoundingRectangle.Left < 0)
 						camera.Position = new Vector2(0, camera.Position.Y);
@@ -180,23 +175,23 @@ namespace TileTactics {
 			}
 			if (camera.Zoom + (inputHandler.deltaMWheelPos/1000.0f)/(GraphicsDevice.DisplayMode.Height/Height) < camera.MinimumZoom) {
 				camera.Zoom = camera.MinimumZoom;
-			}else if(camera.Zoom + (inputHandler.deltaMWheelPos/1000.0f)/(GraphicsDevice.DisplayMode.Height/Height) > camera.MaximumZoom) {
+			} else if (camera.Zoom + (inputHandler.deltaMWheelPos/1000.0f)/(GraphicsDevice.DisplayMode.Height/Height) > camera.MaximumZoom) {
 				camera.Zoom = camera.MaximumZoom;
-			}else
+			} else
 				camera.Zoom += (inputHandler.deltaMWheelPos/1000.0f)/(GraphicsDevice.DisplayMode.Height/Height);
-            #endregion
+			#endregion
 
-            #region SelectedTile
-            if (gui.MainMenuOpen != true) {
-                if (inputHandler.isMBtnPressed(0)) {
-                    Vector2 mPos = inputHandler.MousePos;
-                    Vector2 temp = camera.ScreenToWorld(mPos)/64;
-                    map.TileSelected = new Vector2((int)Math.Floor((float)temp.X), (int)Math.Floor((float)temp.Y));
-                    if (map.TileSelected.X <= 0 || map.TileSelected.X > 70 || map.TileSelected.Y <= 0 || map.TileSelected.Y > 70)
-                        map.TileSelected = new Vector2(-1);
-                }
-            }
-					#endregion
+			#region SelectedTile
+			if (gui.MainMenuOpen != true) {
+				if (inputHandler.isMBtnPressed(0)) {
+					Vector2 mPos = inputHandler.MousePos;
+					Vector2 temp = camera.ScreenToWorld(mPos)/64;
+					map.TileSelected = new Vector2((int)Math.Floor((float)temp.X), (int)Math.Floor((float)temp.Y));
+					if (map.TileSelected.X <= 0 || map.TileSelected.X > 70 || map.TileSelected.Y <= 0 || map.TileSelected.Y > 70)
+						map.TileSelected = new Vector2(-1);
+				}
+			}
+			#endregion
 		}
 
 		/// <summary>
@@ -205,20 +200,20 @@ namespace TileTactics {
 		/// <param name="gameTime">Provides a snapshot of timing values.</param>
 		protected override void Draw(GameTime gameTime) {
 			GraphicsDevice.Clear(Color.Black);
-			
+
 			GraphicsDevice.SetRenderTarget(rend);
 			GraphicsDevice.Clear(Color.Black);
 
 			spriteBatch.Begin(transformMatrix: camera.GetViewMatrix());
 			map.draw(spriteBatch, this);
-            gui.draw(spriteBatch, this);
+			gui.draw(spriteBatch, this);
 
 
-            spriteBatch.End();
+			spriteBatch.End();
 
 			GraphicsDevice.SetRenderTarget(null);
 
-			spriteBatch.Begin( transformMatrix: Matrix2D.CreateScale(1.0f/scale));
+			spriteBatch.Begin(transformMatrix: Matrix2D.CreateScale(1.0f/scale));
 			spriteBatch.Draw(rend, new Vector2(0));
 			spriteBatch.End();
 			base.Draw(gameTime);
