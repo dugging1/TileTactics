@@ -177,16 +177,18 @@ namespace TileTactics {
 				camera.Zoom = camera.MaximumZoom;
 			}else
 				camera.Zoom += (inputHandler.deltaMWheelPos/1000.0f)/(GraphicsDevice.DisplayMode.Height/Height);
-			#endregion
+            #endregion
 
-					#region SelectedTile
-			if (inputHandler.isMBtnPressed(0)) {
-				Vector2 mPos = inputHandler.MousePos;
-				Vector2 temp = camera.ScreenToWorld(mPos)/64;
-				map.TileSelected = new Vector2((int)Math.Floor((float)temp.X), (int)Math.Floor((float)temp.Y));
-				if (map.TileSelected.X <= 0 || map.TileSelected.X > 70 || map.TileSelected.Y <= 0 || map.TileSelected.Y > 70)
-					map.TileSelected = new Vector2(-1);
-			}
+            #region SelectedTile
+            if (gui.MainMenuOpen != true) {
+                if (inputHandler.isMBtnPressed(0)) {
+                    Vector2 mPos = inputHandler.MousePos;
+                    Vector2 temp = camera.ScreenToWorld(mPos)/64;
+                    map.TileSelected = new Vector2((int)Math.Floor((float)temp.X), (int)Math.Floor((float)temp.Y));
+                    if (map.TileSelected.X <= 0 || map.TileSelected.X > 70 || map.TileSelected.Y <= 0 || map.TileSelected.Y > 70)
+                        map.TileSelected = new Vector2(-1);
+                }
+            }
 					#endregion
 		}
 
