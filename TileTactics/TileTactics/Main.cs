@@ -16,7 +16,7 @@ namespace TileTactics {
 		public Camera2D camera;
 		private RenderTarget2D rend;
 		public Map map;
-        private GUI gui;
+        public GUI gui;
 		public InputHandler inputHandler = new InputHandler();
 		private System.Windows.Forms.Form form;
 		private bool wasMaximised;
@@ -142,6 +142,7 @@ namespace TileTactics {
 
 		private const float cameraSpeed = 0.5f;
 		private void handleInput(GameTime dt) {
+					#region Movement
 			if (inputHandler.isKeyPressed(Keys.A)) {
 				if(camera.BoundingRectangle.Left > 0) {
 					camera.Position -= new Vector2(cameraSpeed*dt.ElapsedGameTime.Milliseconds, 0);
@@ -176,6 +177,17 @@ namespace TileTactics {
 				camera.Zoom = camera.MaximumZoom;
 			}else
 				camera.Zoom += (inputHandler.deltaMWheelPos/1000.0f)/(GraphicsDevice.DisplayMode.Height/Height);
+			#endregion
+
+					#region SelectedTile
+			if (inputHandler.isMBtnPressed(0)) {
+				Vector2 mPos = inputHandler.MousePos;
+				Vector2 temp = camera.ScreenToWorld(mPos)/64;
+				map.TileSelected = new Vector2((int)Math.Floor((float)temp.X), (int)Math.Floor((float)temp.Y));
+				if (map.TileSelected.X <= 0 || map.TileSelected.X > 70 || map.TileSelected.Y <= 0 || map.TileSelected.Y > 70)
+					map.TileSelected = new Vector2(-1);
+			}
+					#endregion
 		}
 
 		/// <summary>
