@@ -11,10 +11,14 @@ namespace TileTactics.Network {
 	public class ServerSocketHandler {
 		public static ManualResetEvent allDone = new ManualResetEvent(false);
 		private static List<Socket> clients = new List<Socket>();
+		public static List<IPEndPoint> Addresses = new List<IPEndPoint>();
 
 		public static void addClient(Socket s) {
 			lock (clients) {
 				clients.Add(s);
+			}
+			lock (Addresses) {
+				Addresses.Add(s.RemoteEndPoint as IPEndPoint);
 			}
 		}
 
@@ -34,6 +38,9 @@ namespace TileTactics.Network {
 			lock (clients) {
 				for (int i = 0; i < clients.Count; i++) {
 					if (clients[i].RemoteEndPoint as IPEndPoint == addr) {
+						lock (Addresses) {
+							Addresses.Remove(clients[i].RemoteEndPoint as IPEndPoint);
+						}
 						if (clients[i].Connected) {
 							clients[i].Shutdown(SocketShutdown.Both);
 							clients[i].Close();

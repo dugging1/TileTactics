@@ -11,7 +11,9 @@ namespace TileTactics.Network {
 		public static ConcurrentQueue<NetPacket> RecievedPacket = new ConcurrentQueue<NetPacket>();
 		public static ConcurrentQueue<NetPacket> ToSendPacket = new ConcurrentQueue<NetPacket>();
 
-		public Client(string ip, int port) {
+		Main m;
+
+		public Client(string ip, int port, Main m) {
 			ClientSocketHandler.connect(NetPacket.stringToLongIP(ip), port);
 
 		}
@@ -46,8 +48,11 @@ namespace TileTactics.Network {
 
 		private void handleTilePacket(TilePacket p) {
 			//Update tile packet recieved on client side.
-			//TODO: update tile.
-
+			if (p.hasChar) {
+				m.map.setData((int)p.Pos.X, (int)p.Pos.Y, p.u);
+			} else {
+				m.map.setData((int)p.Pos.X, (int)p.Pos.Y, null);
+			}
 		}
 
 		private void handleRecieve() {
