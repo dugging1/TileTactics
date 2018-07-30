@@ -58,7 +58,11 @@ namespace TileTactics.Network {
 					startCounter += sizeof(int);
 					int len = BitConverter.ToInt32(data, startCounter);
 					startCounter += sizeof(int);
-					string name = BitConverter.ToString(data, startCounter, len);
+					string name = "";
+					for (int i = 0; i < len; i++) {
+						name += BitConverter.ToChar(data, startCounter);
+						startCounter += sizeof(char);
+					}
 					u = new Unit(name, AP, HP);
 				}
 			}
@@ -238,12 +242,20 @@ namespace TileTactics.Network {
 				startCounter += sizeof(int);
 				int len = BitConverter.ToInt32(data, startCounter);
 				startCounter += sizeof(int);
-				username = BitConverter.ToString(data, startCounter, len);
-				startCounter += sizeof(char)*len;
+
+				for (int i = 0; i < len; i++) {
+					username += BitConverter.ToChar(data, startCounter);
+					startCounter += sizeof(char);
+				}
+
 				len = BitConverter.ToInt32(data, startCounter);
 				startCounter += sizeof(int);
-				password = BitConverter.ToString(data, startCounter, len);
-				startCounter += sizeof(char)*len;
+
+				for (int i = 0; i < len; i++) {
+					password += BitConverter.ToChar(data, startCounter);
+					startCounter += sizeof(char);
+				}
+
 				alive = BitConverter.ToBoolean(data, startCounter);
 				startCounter += sizeof(bool);
 				online = BitConverter.ToBoolean(data, startCounter);

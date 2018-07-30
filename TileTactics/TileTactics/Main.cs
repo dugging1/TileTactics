@@ -31,7 +31,7 @@ namespace TileTactics {
 		public const float Height = 1080.0f;
 		public const float Width = 1920.0f;
 
-		public bool isServer = true; //true = server; false = client
+		public bool isServer = false; //true = server; false = client
 		public Server server;
 		public Client client;
 

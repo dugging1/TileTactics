@@ -34,6 +34,7 @@ namespace TileTactics.Network {
 		}
 
 		private static void ReadCB(IAsyncResult ar) {
+			Console.WriteLine("Starting recieve bytes.");
 			StateObject state = (StateObject)ar.AsyncState;
 
 			int bytesRead = 0;
@@ -65,6 +66,7 @@ namespace TileTactics.Network {
 
 		private static void handleData(StateObject state) {
 			byte[] data = state.content.ToArray();
+			Console.WriteLine("Handling data of length: "+data.Length);
 			Packet p = Packet.fromByte(BitConverter.ToInt32(data, 0), data.Skip(sizeof(int)).ToArray());
 			Client.RecievedPacket.Enqueue(new NetPacket(state.workSocket.RemoteEndPoint as IPEndPoint, p));
 		}

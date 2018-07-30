@@ -10,6 +10,7 @@ namespace TileTactics.Network {
 	public class Client {
 		public static ConcurrentQueue<NetPacket> RecievedPacket = new ConcurrentQueue<NetPacket>();
 		public static ConcurrentQueue<NetPacket> ToSendPacket = new ConcurrentQueue<NetPacket>();
+		public static ConcurrentQueue<byte[]> ToProcess = new ConcurrentQueue<byte[]>();
 
 		Main m;
 		public ConcurrentDictionary<string, ClientPlayerObject> players = new ConcurrentDictionary<string, ClientPlayerObject>();
