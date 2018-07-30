@@ -18,7 +18,6 @@ namespace TileTactics {
 	public class GUI {
 		public bool InfoOpen = false;
 		public bool ClickedInGUI = false;
-		public bool MainMenuOpen = true;
 
 		public string[] data = new string[5] { "", "", "", "", "" }; //In Enum order w/ Avatar as last element
 
@@ -46,7 +45,6 @@ namespace TileTactics {
 
 		public void draw(SpriteBatch s, Main M) {
 			if (m == null) m = M;
-
 			if (m.gameState == GameState.MainMenu) {
 
 				Vector2 MMBackground = m.camera.ScreenToWorld(new Vector2(0, 0));
@@ -221,7 +219,6 @@ namespace TileTactics {
 				Client.ToSendPacket.Enqueue(new NetPacket(null, p));
 			}
 			m.gameState = GameState.Map;
-			MainMenuOpen = false;
 		}
 	}
 }
