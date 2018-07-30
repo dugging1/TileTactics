@@ -221,6 +221,7 @@ namespace TileTactics {
 				Client.ToSendPacket.Enqueue(new NetPacket(null, p));
 			}
 			m.gameState = GameState.Map;
+			MainMenuOpen = false;
 		}
 	}
 }

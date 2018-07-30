@@ -29,6 +29,12 @@ namespace TileTactics.Network {
 		}
 
 		public void update() {
+			NetPacket p;
+			RecievedPacket.TryPeek(out p);
+			if (p.p != null)
+				Console.WriteLine("Handling a packet: "+p.p.GetType().ToString());
+			else
+				Console.WriteLine("No packet recieved.");
 			handleRecieve();
 			handleSend();
 		}
