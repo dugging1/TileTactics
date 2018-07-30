@@ -26,7 +26,7 @@ namespace TileTactics.Network {
 				allDone.Reset();
 
 				StateObject state = new StateObject();
-
+				state.workSocket = clientSocket;
 				clientSocket.BeginReceive(state.buffer, 0, StateObject.bufferSize, 0, new AsyncCallback(ReadCB), state);
 
 				allDone.WaitOne();
@@ -40,7 +40,7 @@ namespace TileTactics.Network {
 
 			try {
 				bytesRead = clientSocket.EndReceive(ar);
-			} catch (SocketException e) {
+			} catch (SocketException) {
 				clientSocket.Close();
 				return; //End program
 			}
