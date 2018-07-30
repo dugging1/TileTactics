@@ -71,7 +71,7 @@ namespace TileTactics.Network {
 
 			public TilePacket(Vector2 Pos, Unit u) {
 				this.Pos = Pos;
-				hasChar = u == null;
+				hasChar = u != null;
 				this.u = u;
 			}
 
