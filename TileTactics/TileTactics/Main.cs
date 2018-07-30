@@ -65,7 +65,8 @@ namespace TileTactics {
 		private void Close(object sender, System.Windows.Forms.FormClosedEventArgs e) {
 			Console.WriteLine("Closing");
 			if (isServer) {
-				server.t.Abort();
+				if(server != null)
+					server.t.Abort();
 			} else {
 				string name = gui.data[(int)MMTextFieldSelected.UserName];
 				string pass = gui.data[(int)MMTextFieldSelected.Password];

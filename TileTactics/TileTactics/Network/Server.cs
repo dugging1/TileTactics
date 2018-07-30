@@ -62,12 +62,21 @@ namespace TileTactics.Network {
 				player = new ServerPlayerObject(p.ip, p.port, p.username, p.password, p.online, p.alive);
 				Vector2 v = m.map.AddRandomUnit(p.username);
 				updateTile(v);
+				sendMap(new IPEndPoint(p.ip, p.port));
 			}
 			players.AddOrUpdate(p.username, player, (string k, ServerPlayerObject v) => player);
 			p.password = "";
 			p.ip = 0;
 			p.port = 0;
 			sendToAllClient(p);
+		}
+
+		private void sendMap(IPEndPoint addr) {
+			for (int i = 0; i < 70*70; i++) {
+				Vector2 v = new Vector2((int)Math.Floor(i/70.0f), i%70);
+				NetPacket p = new NetPacket(addr, new TilePacket(v, m.map.getData((int)v.X, (int)v.Y)));
+				ToSendPacket.Enqueue(p);
+			}
 		}
 
 		private void handleTradePacket(TradePacket p) {
