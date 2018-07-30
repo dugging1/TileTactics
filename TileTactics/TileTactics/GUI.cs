@@ -70,7 +70,7 @@ namespace TileTactics {
 					} else {
 						s.Draw(Main.Textures["MMTextSelected"], m.camera.ScreenToWorld(MMTextFields[i]), null, null, new Vector2(0, 0), 0, new Vector2(1 / m.camera.Zoom, 1 / m.camera.Zoom), Color.White);
 					}
-					s.DrawString(font, data[i], m.camera.ScreenToWorld(MMTextFields[i] + new Vector2(1)), Color.Black);
+					s.DrawString(font, data[i], m.camera.ScreenToWorld(MMTextFields[i] + new Vector2(1)), Color.Black, 0, new Vector2(0, 0), new Vector2(0.5f / m.camera.Zoom, 0.5f / m.camera.Zoom), SpriteEffects.None, 1f);
 				}
 
 				s.Draw(Main.Textures["Avatar"], MMAvatar1, null, null, new Vector2(0, 0), 0, new Vector2(1 / m.camera.Zoom, 1 / m.camera.Zoom), Color.White);
