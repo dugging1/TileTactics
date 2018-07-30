@@ -33,7 +33,7 @@ namespace TileTactics {
 			int RX;
 			int RY;
 
-			Vector2 ret;
+			Vector2 ret = new Vector2(0);
 			while (locationFound != true) {
 				RX = R.Next(0, 69);
 				RY = R.Next(0, 69);
