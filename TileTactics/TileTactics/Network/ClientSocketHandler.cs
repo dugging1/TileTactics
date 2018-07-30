@@ -78,6 +78,16 @@ namespace TileTactics.Network {
 			clientSocket.BeginSend(data, 0, data.Length, 0, new AsyncCallback(sendCB), p);
 		}
 
+		public static void SendSync(Packet p) {
+			byte[] data = p.toByte();
+			int len = data.Length;
+			List<byte> send = new List<byte>();
+			send.AddRange(BitConverter.GetBytes(len));
+			send.AddRange(data);
+			data = send.ToArray();
+			clientSocket.Send(data);
+		}
+
 		private static void sendCB(IAsyncResult ar) {
 			clientSocket.EndSend(ar);
 			Console.WriteLine("Sent packet: "+ar.AsyncState.GetType().ToString());

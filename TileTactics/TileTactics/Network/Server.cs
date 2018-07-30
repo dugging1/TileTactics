@@ -23,6 +23,7 @@ namespace TileTactics.Network {
 			long IP = NetPacket.stringToLongIP(ip);
 
 			t = new Thread(new ThreadStart(() => ServerSocketHandler.StartListening(IP, port)));
+			t.Name = "ServerListenThread";
 			t.Start();
 		}
 
@@ -59,6 +60,8 @@ namespace TileTactics.Network {
 					}
 				} else if(p.status == PlayerStatus.Disconnecting){
 					player.online = false;
+					IPEndPoint addr = new IPEndPoint(p.ip, p.port);
+					ServerSocketHandler.removeClient(addr);
 				} else {
 					player.online = p.online;
 				}
