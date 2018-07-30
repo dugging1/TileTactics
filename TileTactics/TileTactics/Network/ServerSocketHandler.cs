@@ -26,7 +26,8 @@ namespace TileTactics.Network {
 			Socket ret = null;
 			lock (clients) {
 				for (int i = 0; i < clients.Count; i++) {
-					if(clients[i].RemoteEndPoint as IPEndPoint == addr) {
+					IPEndPoint t = clients[i].RemoteEndPoint as IPEndPoint;
+					if (t.Equals(addr)) {
 						ret = clients[i];
 					}
 				}

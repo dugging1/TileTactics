@@ -20,7 +20,8 @@ namespace TileTactics {
 		public Vector2 TileSelected = new Vector2(-1);
 
 		public void setData(int x, int y, Unit value) {
-			mapData[y * 70 + x] = value;
+			if (x >= 0 && x < 70 && y >= 0 && y <70)
+				mapData[y * 70 + x] = value;
 		}
 
 		public void dailyAPBoost() {
