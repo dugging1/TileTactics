@@ -87,13 +87,14 @@ namespace TileTactics.Network {
 		}
 
 		private static void ReadCB(IAsyncResult ar) {
+			Console.WriteLine("Starting recieve bytes.");
 			StateObject state = (StateObject)ar.AsyncState;
 			Socket handler = state.workSocket;
 			int bytesRead = 0;
 
 			try {
 				bytesRead = handler.EndReceive(ar);
-			}catch(SocketException e) {
+			}catch(SocketException) {
 				removeClient(handler.RemoteEndPoint as IPEndPoint);
 				return;
 			}
@@ -120,10 +121,16 @@ namespace TileTactics.Network {
 			Packet p = Packet.fromByte(BitConverter.ToInt32(data, 0), data.Skip(sizeof(int)).ToArray());
 			IPEndPoint clientAddr = state.workSocket.RemoteEndPoint as IPEndPoint;
 			Server.RecievedPacket.Enqueue(new NetPacket(clientAddr, p));
+			Console.WriteLine("Enqueued packet.");
 		}
 
 		public static void Send(Socket handler, Packet p) {
 			byte[] data = p.toByte();
+			int len = data.Length;
+			List<byte> send = new List<byte>();
+			send.AddRange(BitConverter.GetBytes(len));
+			send.AddRange(data);
+			data = send.ToArray();
 			handler.BeginSend(data, 0, data.Length, 0, new AsyncCallback(SendCB), handler);
 		}
 

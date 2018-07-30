@@ -70,6 +70,11 @@ namespace TileTactics.Network {
 
 		public static void Send(Packet p) {
 			byte[] data = p.toByte();
+			int len = data.Length;
+			List<byte> send = new List<byte>();
+			send.AddRange(BitConverter.GetBytes(len));
+			send.AddRange(data);
+			data = send.ToArray();
 			clientSocket.BeginSend(data, 0, data.Length, 0, new AsyncCallback(sendCB), p);
 		}
 
