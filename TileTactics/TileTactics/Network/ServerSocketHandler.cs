@@ -113,7 +113,7 @@ namespace TileTactics.Network {
 						state.buffer = state.buffer.Skip(offset).ToArray();
 						state.messageLength = -1;
 						state.recieved = 0;
-						handler.BeginReceive(state.buffer, StateObject.bufferSize-offset, StateObject.bufferSize, 0, new AsyncCallback(ReadCB), state);
+						handler.BeginReceive(state.buffer, StateObject.bufferSize-offset, offset, 0, new AsyncCallback(ReadCB), state);
 					} else {
 						state.content.AddRange(state.buffer.Skip(sizeof(int)));
 						state.recieved += StateObject.bufferSize-sizeof(int);
@@ -129,7 +129,7 @@ namespace TileTactics.Network {
 						state.buffer = state.buffer.Skip(offset).ToArray();
 						state.messageLength = -1;
 						state.recieved = 0;
-						handler.BeginReceive(state.buffer, StateObject.bufferSize-offset, StateObject.bufferSize, 0, new AsyncCallback(ReadCB), state);
+						handler.BeginReceive(state.buffer, StateObject.bufferSize-offset, offset, 0, new AsyncCallback(ReadCB), state);
 					} else {
 						state.content.AddRange(state.buffer);
 						state.recieved += StateObject.bufferSize;
