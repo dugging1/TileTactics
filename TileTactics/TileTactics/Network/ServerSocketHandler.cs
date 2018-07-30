@@ -101,7 +101,42 @@ namespace TileTactics.Network {
 			}
 
 			if(bytesRead > 0) {
-				if(state.messageLength == -1) { //Start of message
+				if (state.messageLength == -1) {
+					//Start of new message
+					state.messageLength = BitConverter.ToInt32(state.buffer, 0);
+					if (state.buffer.Length >= state.messageLength-state.recieved) {
+						state.content.AddRange(state.buffer.Skip(sizeof(int)).Take(state.messageLength-state.recieved));
+						byte[] packet = state.content.ToArray();
+						StateObject s = new StateObject() { workSocket = state.workSocket, content = new List<byte>(packet), messageLength = state.messageLength, recieved = state.messageLength };
+						handleData(s);
+						int offset = sizeof(int)+state.messageLength-state.recieved;
+						state.buffer = (byte[])state.buffer.Skip(offset);
+						state.messageLength = -1;
+						state.recieved = 0;
+						handler.BeginReceive(state.buffer, StateObject.bufferSize-offset, StateObject.bufferSize, 0, new AsyncCallback(ReadCB), state);
+					} else {
+						state.content.AddRange(state.buffer.Skip(sizeof(int)));
+						state.recieved += StateObject.bufferSize-sizeof(int);
+						handler.BeginReceive(state.buffer, 0, StateObject.bufferSize, 0, new AsyncCallback(ReadCB), state);
+					}
+				} else {
+					if (state.buffer.Length >= state.messageLength-state.recieved) {
+						state.content.AddRange(state.buffer.Take(state.messageLength-state.recieved));
+						byte[] packet = state.content.ToArray();
+						StateObject s = new StateObject() { workSocket = state.workSocket, content = new List<byte>(packet), messageLength = state.messageLength, recieved = state.messageLength };
+						handleData(s);
+						int offset = state.messageLength-state.recieved;
+						state.buffer = (byte[])state.buffer.Skip(offset);
+						state.messageLength = -1;
+						state.recieved = 0;
+						handler.BeginReceive(state.buffer, StateObject.bufferSize-offset, StateObject.bufferSize, 0, new AsyncCallback(ReadCB), state);
+					} else {
+						state.content.AddRange(state.buffer);
+						state.recieved += StateObject.bufferSize;
+						handler.BeginReceive(state.buffer, 0, StateObject.bufferSize, 0, new AsyncCallback(ReadCB), state);
+					}
+				}
+				/*if(state.messageLength == -1) { //Start of message
 					state.messageLength = BitConverter.ToInt32(state.buffer, 0);
 					state.content.AddRange(state.buffer.Skip(sizeof(int)));
 					state.recieved += bytesRead-sizeof(int);
@@ -113,7 +148,7 @@ namespace TileTactics.Network {
 						//Get more data
 						handler.BeginReceive(state.buffer, 0, StateObject.bufferSize, 0, new AsyncCallback(ReadCB), state);
 					}
-				}				
+				}*/
 			}
 		}
 
