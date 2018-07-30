@@ -110,8 +110,17 @@ namespace TileTactics {
 				Vector2 vec10 = new Vector2(630 + 20, 0 + 280);
 				Vector2 SelectedTitleStaPicV = m.camera.ScreenToWorld(vec10);
 
-				s.Draw(Main.Textures["UI"], Backgroundloc, null, null, new Vector2(0, 0), 0, new Vector2(1 / m.camera.Zoom, 1 / m.camera.Zoom), Color.White);
-				s.DrawString(Main.Fonts["UIFont"], "Information Panel [I to Hide]\nClick To Scan Tile...", InfoTitleOffsetV, Color.White, 0, new Vector2(0, 0), new Vector2(1 / m.camera.Zoom, 1 / m.camera.Zoom), SpriteEffects.None, 1f);
+                Vector2 vec11 = m.camera.ScreenToWorld(new Vector2(630+3, 0+9));
+
+                Vector2 vec12 = m.camera.ScreenToWorld(new Vector2(630+12, 0+12));
+                Vector2 vec13 = m.camera.ScreenToWorld(new Vector2(630+86, 0+12));
+
+                s.Draw(Main.Textures["UI"], Backgroundloc, null, null, new Vector2(0, 0), 0, new Vector2(1 / m.camera.Zoom, 1 / m.camera.Zoom), Color.White);
+                s.Draw(Main.Textures["UITab"], vec11, null, null, new Vector2(0, 0), 0, new Vector2(1 / m.camera.Zoom, 1 / m.camera.Zoom), Color.White);
+                s.Draw(Main.Textures["Tab1"], vec12, null, null, new Vector2(0, 0), 0, new Vector2(1 / m.camera.Zoom, 1 / m.camera.Zoom), Color.White);
+                s.Draw(Main.Textures["Tab2"], vec13, null, null, new Vector2(0, 0), 0, new Vector2(1 / m.camera.Zoom, 1 / m.camera.Zoom), Color.White);
+
+                s.DrawString(Main.Fonts["UIFont"], "Information Panel [I to Hide]\nClick To Scan Tile...", InfoTitleOffsetV, Color.White, 0, new Vector2(0, 0), new Vector2(1 / m.camera.Zoom, 1 / m.camera.Zoom), SpriteEffects.None, 1f);
 
 				if (ClickedInGUI) {
 					s.DrawString(Main.Fonts["UIFont"], "Seltected Tile:", SelectedTitleV, Color.Gray, 0, new Vector2(0, 0), new Vector2(1 / m.camera.Zoom, 1 / m.camera.Zoom), SpriteEffects.None, 1f);

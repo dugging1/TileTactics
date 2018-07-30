@@ -31,11 +31,11 @@ namespace TileTactics {
 		public const float Height = 1080.0f;
 		public const float Width = 1920.0f;
 
-		public bool isServer = false; //true = server; false = client
+		public bool isServer = true; //true = server; false = client
 		public Server server;
 		public Client client;
 
-		public GameState gameState = GameState.MainMenu;
+		public GameState gameState = GameState.Map;
 
 		public Main() {
 			graphics = new GraphicsDeviceManager(this);
@@ -110,8 +110,13 @@ namespace TileTactics {
 			Textures.Add("MMTextOff", Content.Load<Texture2D>("TextOff"));
 			Textures.Add("MMTextOn", Content.Load<Texture2D>("TextOn"));
 			Textures.Add("MMTextSelected", Content.Load<Texture2D>("TextSelected"));
+            Textures.Add("UITab", Content.Load<Texture2D>("TabUI"));
+            Textures.Add("Tab1", Content.Load<Texture2D>("Tab1"));
+            Textures.Add("Tab1On", Content.Load<Texture2D>("Tab1On"));
+            Textures.Add("Tab2", Content.Load<Texture2D>("Tab2"));
+            Textures.Add("Tab2On", Content.Load<Texture2D>("Tab2On"));
 
-			Fonts.Add("Basic", Content.Load<SpriteFont>("SF"));
+            Fonts.Add("Basic", Content.Load<SpriteFont>("SF"));
 			Fonts.Add("UIFont", Content.Load<SpriteFont>("UIFont"));
 			Fonts.Add("APFont", Content.Load<SpriteFont>("APText"));
 
