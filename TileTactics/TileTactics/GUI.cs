@@ -220,6 +220,7 @@ namespace TileTactics {
 				PlayerPacket p = new PlayerPacket(localAddr, data[(int)MMTextFieldSelected.UserName], data[(int)MMTextFieldSelected.Password], PlayerStatus.Connecting, true, true);
 				Client.ToSendPacket.Enqueue(new NetPacket(null, p));
 			}
+			m.gameState = GameState.Map;
 		}
 	}
 }

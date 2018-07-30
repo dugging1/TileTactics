@@ -26,6 +26,7 @@ namespace TileTactics.Network {
 		public Client(string ip, int port, Main M) {
 			m = M;
 			ClientSocketHandler.connect(NetPacket.stringToLongIP(ip), port);
+
 		}
 
 		public void update() {

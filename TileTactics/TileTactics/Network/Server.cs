@@ -16,16 +16,21 @@ namespace TileTactics.Network {
 
 		public ConcurrentDictionary<string, ServerPlayerObject> players = new ConcurrentDictionary<string, ServerPlayerObject>();
 		private Main m;
+		public Thread t;
 
 		public Server(string ip, int port, Main m) {
 			this.m = m;
 			long IP = NetPacket.stringToLongIP(ip);
 
-			Thread t = new Thread(new ThreadStart(() => ServerSocketHandler.StartListening(IP, port)));
+			t = new Thread(new ThreadStart(() => ServerSocketHandler.StartListening(IP, port)));
 			t.Start();
 		}
 
 		public void update() {
+			NetPacket p;
+			RecievedPacket.TryPeek(out p);
+			if(p.p != null)
+				Console.WriteLine("Handling a packet: "+p.p.GetType().ToString());
 			handleRecievePacket();
 			handleSendPacket();
 		}
@@ -55,6 +60,8 @@ namespace TileTactics.Network {
 				}
 			} else {
 				player = new ServerPlayerObject(p.ip, p.port, p.username, p.password, p.online, p.alive);
+				Vector2 v = m.map.AddRandomUnit(p.username);
+				updateTile(v);
 			}
 			players.AddOrUpdate(p.username, player, (string k, ServerPlayerObject v) => player);
 			p.password = "";

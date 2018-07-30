@@ -4,7 +4,9 @@ using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using TileTactics.Network;
+using static TileTactics.Network.Packet;
 
 namespace TileTactics {
 	public enum GameState { MainMenu, Map }
@@ -61,6 +63,15 @@ namespace TileTactics {
 		}
 
 		private void Close(object sender, System.Windows.Forms.FormClosedEventArgs e) {
+			Console.WriteLine("Closing");
+			if (isServer) {
+				server.t.Abort();
+			} else {
+				string name = gui.data[(int)MMTextFieldSelected.UserName];
+				string pass = gui.data[(int)MMTextFieldSelected.Password];
+				PlayerPacket p = new PlayerPacket(ClientSocketHandler.clientSocket.LocalEndPoint as IPEndPoint, name, pass, PlayerStatus.Disconnecting, client.isSelfAlive, false);
+				ClientSocketHandler.Send(p);
+			}
 			Exit();
 		}
 
