@@ -54,6 +54,7 @@ namespace TileTactics.Network {
 					if (state.recieved == state.messageLength) {
 						//All data recieved; Handle data;
 						handleData(state);
+						allDone.Set();
 					} else {
 						//Get more data
 						clientSocket.BeginReceive(state.buffer, 0, StateObject.bufferSize, 0, new AsyncCallback(ReadCB), state);
