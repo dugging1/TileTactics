@@ -120,11 +120,11 @@ namespace TileTactics {
 
 			rend = new RenderTarget2D(GraphicsDevice, Convert.ToInt32(Width), Convert.ToInt32(Height));
 
-			for (int i = 0; i < 20; i++) {
-				map.AddRandomUnit("Test");
-			}
-			map.dailyAPBoost();
-			map.setData(1, 2, new Unit("Test2"));
+			//for (int i = 0; i < 20; i++) {
+			//	map.AddRandomUnit("Test");
+			//}
+			//map.dailyAPBoost();
+			//map.setData(1, 2, new Unit("Test2"));
 		}
 
 		/// <summary>
@@ -145,10 +145,12 @@ namespace TileTactics {
 			handleInput(gameTime);
 			gui.update();
 
-			if (isServer) { //TODO: uncomment when init is finished
-							//server.update();
+			if (isServer) {
+				if(server != null)
+					server.update();
 			} else {
-				//client.update();
+				if(client != null)
+					client.update();
 			}
 
 			base.Update(gameTime);

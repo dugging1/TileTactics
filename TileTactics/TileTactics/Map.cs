@@ -11,7 +11,12 @@ using static TileTactics.Network.Packet;
 namespace TileTactics {
 	public class Map {
 		private Unit[] mapData = new Unit[70*70];
-		public Unit getData(int x, int y) { return mapData[y * 70 + x]; }
+		public Unit getData(int x, int y) {
+			if (x >= 0 && x < 70 && y >= 0 && y <70)
+				return mapData[y * 70 + x];
+			else
+				return null;
+		}
 		public Vector2 TileSelected = new Vector2(-1);
 
 		public void setData(int x, int y, Unit value) {
