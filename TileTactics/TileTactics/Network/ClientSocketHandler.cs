@@ -56,7 +56,8 @@ namespace TileTactics.Network {
 						StateObject s = new StateObject() { workSocket = state.workSocket, content = new List<byte>(packet), messageLength = state.messageLength, recieved = state.messageLength};
 						handleData(s);
 						int offset = sizeof(int)+state.messageLength-state.recieved;
-						state.buffer = state.buffer.Skip(offset).ToArray();
+						state.buffer = new byte[StateObject.bufferSize];
+						state.buffer.Skip(offset).ToArray().CopyTo(state.buffer, 0);
 						state.messageLength = -1;
 						state.recieved = 0;
 						clientSocket.BeginReceive(state.buffer, StateObject.bufferSize-offset, offset, 0, new AsyncCallback(ReadCB), state);
@@ -72,7 +73,8 @@ namespace TileTactics.Network {
 						StateObject s = new StateObject() { workSocket = state.workSocket, content = new List<byte>(packet), messageLength = state.messageLength, recieved = state.messageLength };
 						handleData(s);
 						int offset = state.messageLength-state.recieved;
-						state.buffer = state.buffer.Skip(offset).ToArray();
+						state.buffer = new byte[StateObject.bufferSize];
+						state.buffer.Skip(offset).ToArray().CopyTo(state.buffer, 0);
 						state.messageLength = -1;
 						state.recieved = 0;
 						clientSocket.BeginReceive(state.buffer, StateObject.bufferSize-offset, offset, 0, new AsyncCallback(ReadCB), state);
