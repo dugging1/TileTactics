@@ -30,10 +30,12 @@ namespace TileTactics.Network {
 			NetPacket p;
 			RecievedPacket.TryPeek(out p);
 			if (p.p != null)
-				Console.WriteLine("Handling a packet: "+p.p.GetType().ToString());
-			else
-				Console.WriteLine("No packet recieved.");
+				Console.WriteLine("Handling a received packet: "+p.p.GetType().ToString());
 			handleRecievePacket();
+
+			ToSendPacket.TryPeek(out p);
+			if (p.p != null)
+				Console.WriteLine("Handling a send packet: "+p.p.GetType().ToString());
 			handleSendPacket();
 		}
 

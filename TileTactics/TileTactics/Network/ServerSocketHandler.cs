@@ -134,6 +134,7 @@ namespace TileTactics.Network {
 		private static void SendCB(IAsyncResult ar) {
 			Socket handler = (Socket)ar.AsyncState;
 			handler.EndSend(ar);
+			Console.WriteLine("Sent packet to: "+(handler.RemoteEndPoint as IPEndPoint).Address.ToString());
 		}
 	}
 }

@@ -65,16 +65,17 @@ namespace TileTactics.Network {
 		private static void handleData(StateObject state) {
 			byte[] data = state.content.ToArray();
 			Packet p = Packet.fromByte(BitConverter.ToInt32(data, 0), data.Skip(sizeof(int)).ToArray());
-			//TODO: Put packet in recieved queue
+			Client.RecievedPacket.Enqueue(new NetPacket(state.workSocket.RemoteEndPoint as IPEndPoint, p));
 		}
 
 		public static void Send(Packet p) {
 			byte[] data = p.toByte();
-			clientSocket.BeginSend(data, 0, data.Length, 0, new AsyncCallback(sendCB), null);
+			clientSocket.BeginSend(data, 0, data.Length, 0, new AsyncCallback(sendCB), p);
 		}
 
 		private static void sendCB(IAsyncResult ar) {
 			clientSocket.EndSend(ar);
+			Console.WriteLine("Sent packet: "+ar.AsyncState.GetType().ToString());
 		}
 	}
 }
