@@ -12,7 +12,7 @@ namespace TileTactics.Network {
 	public class StateObject {
 		//Client socket
 		public Socket workSocket;
-		public const int bufferSize = 1024;
+		public const int bufferSize = 2048;
 		public byte[] buffer = new byte[bufferSize];
 		public int messageLength = -1;
 		public int recieved;
